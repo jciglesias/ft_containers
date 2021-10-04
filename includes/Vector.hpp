@@ -1,22 +1,25 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   vector.hpp                                         :+:      :+:    :+:   //
+//   Vector.hpp                                         :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2021/10/01 15:06:35 by jiglesia          #+#    #+#             //
-//   Updated: 2021/10/01 15:08:14 by jiglesia         ###   ########.fr       //
+//   Created: 2021/10/03 15:21:58 by jiglesia          #+#    #+#             //
+//   Updated: 2021/10/04 09:34:05 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-# include "ft.hpp"
+namespace ft {class vector;}
 
-template<typename T>
 class ft::vector
-{};
+{
+public:
+	int i;
+private:
+};
 
 #endif

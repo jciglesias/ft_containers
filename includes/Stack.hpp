@@ -1,23 +1,24 @@
 // ************************************************************************** //
 //                                                                            //
 //                                                        :::      ::::::::   //
-//   ft.hpp                                             :+:      :+:    :+:   //
+//   Stack.hpp                                          :+:      :+:    :+:   //
 //                                                    +:+ +:+         +:+     //
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
-//   Created: 2021/10/01 15:00:51 by jiglesia          #+#    #+#             //
-//   Updated: 2021/10/01 15:05:39 by jiglesia         ###   ########.fr       //
+//   Created: 2021/10/04 09:30:11 by jiglesia          #+#    #+#             //
+//   Updated: 2021/10/04 09:33:07 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
-#ifndef FT_HPP
-# define FT_HPP
+#ifndef STACK_HPP
+# define STACK_HPP
 
-namespace ft
+namespace ft {class stack;}
+
+class ft::stack
 {
-	class stack;
-	class vector;
-	class map;
+public:
+private:
 }
 
 #endif
