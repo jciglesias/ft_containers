@@ -6,7 +6,7 @@
 #    By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/09 12:55:34 by jiglesia          #+#    #+#              #
-#    Updated: 2021/10/03 15:13:00 by jiglesia         ###   ########.fr        #
+#    Updated: 2022/04/27 21:40:49 by jiglesia         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -52,11 +52,8 @@ STDSRC		=	$(SRCS)
 DIROBJ		=	./depo/
 
 OAUX		=	$(FTSRC:%=$(DIROBJ)%)
-CAUX		=	$(STDSRC:%=$(DIROBJ)%)
 DEPS		=	$(OAUX:.cpp=.d)
 OBJS		=	$(OAUX:.cpp=.o)
-CDEPS		=	$(CAUX:.cpp=.d)
-COBJS		=	$(CAUX:.cpp=.o)
 
 ifdef FLAGS
 	ifeq ($(FLAGS), no)
