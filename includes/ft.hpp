@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/04/27 15:50:02 by jiglesia          #+#    #+#             //
-//   Updated: 2022/04/27 21:12:12 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/04/28 21:03:12 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,12 +20,17 @@
 
 namespace ft
 {
+/*
+**containers
+*/
 	template < class T, class Alloc = std::allocator<T> >
 	class vector;
 
 	template < class T, class Alloc = std::allocator<T> >
 	class stack;
-
+/*
+**iterator struct
+*/
 	template < class Category,				//iterator::iterator_category
 			   class T,						//iterator::value_type
 			   class Distance = ptrdiff_t,	//iterator::difference_type
@@ -38,6 +43,25 @@ namespace ft
 		typedef Reference reference;
 		typedef Category  iterator_category;
 	};
+/*
+**types of iterators
+*/
+	template < typename T >
+	class rantom_access_iterator;
+
+	template < typename T >
+	class iterator_traits;
+
+	template < typename T >
+	class reverse_iterator;
+/*
+**Empty classes to identify the category of an iterator
+*/
+	struct input_iterator_tag {};
+	struct output_iterator_tag {};
+	struct forward_iterator_tag {};
+	struct bidirectional_iterator_tag {};
+	struct random_access_iterator_tag {};
 }
 
 #endif

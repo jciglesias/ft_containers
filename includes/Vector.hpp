@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/03 15:21:58 by jiglesia          #+#    #+#             //
-//   Updated: 2022/04/27 21:42:22 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/04/28 10:46:27 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -36,12 +36,20 @@ public:
 	**member functions
 	*/
 	explicit vector(const allocator_type& alloc = allocator_type()) :
-		_alloc(alloc), _start(0), _end(0), _memsize(0), _size(0){};
+		_alloc(alloc), _start(0), _end(0), _memlast(0), _size(0){};
 	explicit vector(size_type n, const value_type& val = value_type(),
-					const allocator_type& alloc = allocator_type());
-	template <class InputIterator>
-	vector(InputIterator first, InputIterator last,
-		   const allocator_type& alloc = allocator_type());
+					const allocator_type& alloc = allocator_type()) :
+		_size(n), _alloc(alloc), _start(0), _end(0), _memlast(0)
+		{
+			_start = alloc.allocate(_size);
+			_end = _start;
+			_memlast = _start + n;
+			while (n--)
+				_alloc.construct(_end++, val);
+		};
+//	template <class InputIterator>
+//	vector(InputIterator first, InputIterator last,
+//		   const allocator_type& alloc = allocator_type());
 	vector(const vector& x);
 	~vector(){}
 	//operator=
@@ -94,7 +102,7 @@ private:
 	allocator_type	_alloc;
 	pointer			_start;
 	pointer			_end;
-	pointer			_memsize;
+	pointer			_memlast;
 	size_type		_size;
 };
 
