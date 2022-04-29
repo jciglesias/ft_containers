@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/04/27 15:50:02 by jiglesia          #+#    #+#             //
-//   Updated: 2022/04/28 21:03:12 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/04/29 17:41:57 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -50,9 +50,6 @@ namespace ft
 	class rantom_access_iterator;
 
 	template < typename T >
-	class iterator_traits;
-
-	template < typename T >
 	class reverse_iterator;
 /*
 **Empty classes to identify the category of an iterator
@@ -62,6 +59,51 @@ namespace ft
 	struct forward_iterator_tag {};
 	struct bidirectional_iterator_tag {};
 	struct random_access_iterator_tag {};
+/*
+**iterator traits
+*/
+	template < class Iterator >
+	struct iterator_traits
+	{
+		typedef typename Iterator::value_type			value_type;
+		typedef typename Iterator::difference_type		difference_type;
+		typedef typename Iterator::pointer				pointer;
+		typedef typename Iterator::reference			reference;
+		typedef typename Iterator::iterator_category	iterator_category;
+	};
+
+	template < class T >
+	struct iterator_traits< T* >
+	{
+		typedef T							value_type;
+		typedef ptrdiff_t					difference_type;
+		typedef T*							pointer;
+		typedef T&							reference;
+		typedef random_access_iterator_tag	iterator_category;
+	};
+
+	template < class T >
+	struct iterator_traits< const T* >
+	{
+		typedef T							value_type;
+		typedef ptrdiff_t					difference_type;
+		typedef const T*					pointer;
+		typedef const T&					reference;
+		typedef random_access_iterator_tag	iterator_category;
+	};
+
+	template < class Iterator >
+	ft::iterator_traits<Iterator>::difference_type distance(Iterator first, Iterator last)
+	{
+		ft::iterator_traits<Iterator>::difference_type dst;
+
+		while (first != last)
+		{
+			first++;
+			dst++;
+		}
+		return (dst);
+	}
 }
 
 #endif
