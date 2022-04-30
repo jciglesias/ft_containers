@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/04/27 15:50:02 by jiglesia          #+#    #+#             //
-//   Updated: 2022/04/29 17:41:57 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/04/30 15:28:55 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -17,6 +17,8 @@
 # include <iostream>
 # include <string>
 # include <stddef.h>
+//# include "reverse_iterator.hpp"
+//# include "random_access_iterator.hpp"
 
 namespace ft
 {
@@ -47,7 +49,7 @@ namespace ft
 **types of iterators
 */
 	template < typename T >
-	class rantom_access_iterator;
+	class random_access_iterator;
 
 	template < typename T >
 	class reverse_iterator;
@@ -93,9 +95,9 @@ namespace ft
 	};
 
 	template < class Iterator >
-	ft::iterator_traits<Iterator>::difference_type distance(Iterator first, Iterator last)
+	typename iterator_traits<Iterator>::difference_type distance(Iterator first, Iterator last)
 	{
-		ft::iterator_traits<Iterator>::difference_type dst;
+		typename iterator_traits<Iterator>::difference_type dst;
 
 		while (first != last)
 		{

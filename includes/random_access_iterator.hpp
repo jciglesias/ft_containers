@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/04/28 20:48:56 by jiglesia          #+#    #+#             //
-//   Updated: 2022/04/29 12:13:57 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/04/30 15:31:09 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,11 +15,11 @@
 
 # include "ft.hpp"
 //https://en.cppreference.com/w/cpp/iterator/random_access_iterator
+//namespace ft {class random_access_iterator;}
+
 template < typename T >
 class ft::random_access_iterator : public ft::iterator< ft::random_access_iterator_tag, T >
 {
-private:
-	pointer	_i;
 public:
 	typedef typename ft::iterator<ft::random_access_iterator_tag, T>	iterator;
 	typedef typename iterator::value_type								value_type;
@@ -35,7 +35,7 @@ public:
 /*
 **getter
 */
-	pointer base(void) const {return (this->_i;)}
+	pointer base(void) const {return (this->_i);}
 /*
 **operators
 */
@@ -90,6 +90,8 @@ public:
 		{
 			return (random_access_iterator<const T>(this->_i));
 		}
+private:
+	pointer	_i;
 };
 
 namespace ft
@@ -136,16 +138,16 @@ namespace ft
 		return (lhs.base() >= rhs.base());
 	}
 
-	template < typename TL, typename TR >
-	inline ft::random_access_iterator<T>	operator+(const ft::random_access_iterator<TL> lhs,
-						   const ft::random_access_iterator<TR> rhs)
+	template < typename T >
+	inline ft::random_access_iterator<T>	operator+(const ft::random_access_iterator<T> lhs,
+						   const ft::random_access_iterator<T> rhs)
 	{
 		return (lhs.base() + rhs.base());
 	}
 
-	template < typename TL, typename TR >
-	inline ft::random_access_iterator<T>	operator-(const ft::random_access_iterator<TL> lhs,
-						   const ft::random_access_iterator<TR> rhs)
+	template < typename T >
+	inline ft::random_access_iterator<T>	operator-(const ft::random_access_iterator<T> lhs,
+						   const ft::random_access_iterator<T> rhs)
 	{
 		return (lhs.base() - rhs.base());
 	}
