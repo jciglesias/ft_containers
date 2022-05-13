@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/01 16:01:30 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/12 13:38:51 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/05/13 15:53:23 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -68,9 +68,10 @@ int main()
 	std::cout << "v.capacity() ft <-> std" << std::endl;
 	std::cout << a.capacity() << " <-> " << b.capacity() << std::endl;
 	ft::vector<int> c(5, 900);
-	a.swap(c);
+	swap(a, c);
 	std::cout << "a.swap(c) a <-> c" << std::endl;
 	for (unsigned long i = 0; i < c.size(); i++)
 		std::cout << "pos " << i << ": " << ((i < a.size()) ? a[i] : 404) << " <-> " << c[i] << std::endl;
+	std::cout << "a > c: " << (a > c) << std::endl;
 	return 0;
 }

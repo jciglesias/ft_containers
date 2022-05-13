@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/04/27 15:50:02 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/13 11:44:12 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/05/13 15:30:20 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -155,6 +155,55 @@ namespace ft
 	template < class T >
 	struct enable_if<true, T>
 	{ typedef T type; };
+//https://www.cplusplus.com/reference/algorithm/lexicographical_compare/
+	template <class InputIterator1, class InputIterator2>
+	bool lexicographical_compare(InputIterator1 f1, InputIterator1 l1,
+								 InputIterator2 f2, InputIterator2 l2){
+		while (f1 != l1) {
+			if (f2 == l2 || *f2 < *f1)
+				return false;
+			else if (*f1 < *f2)
+				return true;
+			++f1;
+			++f2;
+		}
+		return (f2 != l2);
+	}
+	template <class InputIterator1, class InputIterator2, class Compare>
+	bool lexicographical_compare(InputIterator1 f1, InputIterator1 l1,
+								 InputIterator2 f2, InputIterator2 l2, Compare cmp){
+		while (f1 != l1) {
+			if (f2 == l2 || cmp(*f2, *f1))
+				return false;
+			else if (cmp(*f1, *f2))
+				return true;
+			++f1;
+			++f2;
+		}
+		return (f2 != l2);
+	}
+//https://www.cplusplus.com/reference/algorithm/equal/
+	template <class InputIterator1, class InputIterator2>
+	bool equal(InputIterator1 f1, InputIterator1 l1, InputIterator2 f2 ) {
+		while (f1!=l1) {
+			if (!(*f1 == *f2))
+				return false;
+			++f1;
+			++f2;
+		}
+		return true;
+	}
+	template <class InputIterator1, class InputIterator2, class BinaryPredicate>
+	bool equal (InputIterator1 f1, InputIterator1 l1,
+				InputIterator2 f2, BinaryPredicate pred){
+		while (f1!=l1) {
+			if (!pred(*f1, *f2))
+				return false;
+			++f1;
+			++f2;
+		}
+		return true;
+	}
 }
 
 #endif
