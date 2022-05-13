@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/03 15:21:58 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/13 15:51:25 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/05/13 17:59:47 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -171,7 +171,7 @@ public:
 			return ;
 		this->reserve(n);
 		while (first != last){
-			_alloc.construct(_end++, *first++);
+			_alloc.construct(_end++, *(first++));
 			_size++;
 		}
 	}
@@ -201,10 +201,10 @@ public:
 
 			this->reserve(_size + n);
 			p = _start + pos;
-			for (size_type i = 0; p != (_start + (_size - i)); i++)
+			for (size_type i = 0; p != iterator(_start + (_size - i)); i++)
 				_alloc.construct(_start + ((_size + n - 1) - i), *(_start + ((_size - 1) - i)));
-			while (n--)
-				_alloc.construct(p + n, val);
+			for (size_type i = 0; i < n; i++)
+				_alloc.construct((_start + pos) + i, val);
 			_size += n;
 			_end = _start + _size;
 			return (p);
@@ -229,10 +229,10 @@ public:
 	iterator	erase(iterator p) {
 		iterator tmp = p;
 		while ((tmp + 1) != iterator(_end)){
-			_alloc.construct(tmp, *(tmp + 1));
+			_alloc.construct(tmp.base(), *(tmp + 1));
 			tmp++;
 		}
-		_alloc.destroy(tmp);
+		_alloc.destroy(tmp.base());
 		_end--;
 		_size--;
 		return (p);
@@ -242,7 +242,7 @@ public:
 		size_type	dist = ft::distance(first, last);
 
 		while ((tmp + dist) != iterator(_end)){
-			_alloc.construct(tmp, *(tmp + dist));
+			_alloc.construct(tmp.base(), *(tmp + dist));
 			tmp++;
 		}
 		while (iterator(--_end) != tmp){
@@ -262,6 +262,7 @@ public:
 	void	clear(){
 		for (size_type i = 0; i < _size; i++)
 			_alloc.destroy(--_end);
+		_end = _start;
 		_size = 0;
 	}
 /*
