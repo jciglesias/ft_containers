@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/03 15:21:58 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/12 13:35:58 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/05/13 11:38:33 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -163,8 +163,8 @@ public:
 			_alloc.construct(_end++, val);
 	}
 	template < class InputIterator >
-	void	assign(InputIterator first, InputIterator last){//,
-	//typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0){
+	void	assign(InputIterator first, InputIterator last,
+	typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0){
 		size_type n = ft::distance(first, last);
 		this->clear();
 		if (!n)
@@ -210,8 +210,8 @@ public:
 			return (p);
 		}
 	template < class InputIterator >
-	iterator insert(iterator p, InputIterator first, InputIterator last)//,
-					//typename ft::enable_if< !ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
+	iterator insert(iterator p, InputIterator first, InputIterator last,
+					typename ft::enable_if< !ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
 			size_type	dist = ft::distance(first, last);
 			size_type	pos = ft::distance(iterator(this->_start), p);

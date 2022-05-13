@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/04/27 15:50:02 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/12 12:01:58 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/05/13 11:44:12 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,8 +18,6 @@
 # include <string>
 # include <stddef.h>
 # include <typeinfo>
-//# include "reverse_iterator.hpp"
-//# include "random_access_iterator.hpp"
 
 namespace ft
 {
@@ -112,83 +110,45 @@ namespace ft
 /*
 **type traits
 */
-//https://www.cplusplus.com/reference/type_traits/integral_constant/
-	template < class T>
+//https://www.cplusplus.com/reference/type_traits/integral_const/
+	template < class T, T v>
 	struct integral_const
 	{
-		static bool value;
+		static const T value = v;
 		typedef bool value_type;
-		typedef integral_const<T> type;
-		integral_const(){
-		if (typeid(T).name() == typeid(bool).name())
-			value = true;
-		else if (typeid(T).name() == typeid(char).name())
-			value = true;
-/*		else if (typeid(T).name() == typeid(char16_t).name())
-			value = true;
-		else if (typeid(T).name() == typeid(char32_t).name())
-			value = true;
-*/		else if (typeid(T).name() == typeid(wchar_t).name())
-			value = true;
-		else if (typeid(T).name() == typeid(signed char).name())
-			value = true;
-		else if (typeid(T).name() == typeid(short int).name())
-			value = true;
-		else if (typeid(T).name() == typeid(int).name())
-			value = true;
-		else if (typeid(T).name() == typeid(long int).name())
-			value = true;
-		else if (typeid(T).name() == typeid(long long int).name())
-			value = true;
-		else if (typeid(T).name() == typeid(unsigned char).name())
-			value = true;
-		else if (typeid(T).name() == typeid(unsigned short int).name())
-			value = true;
-		else if (typeid(T).name() == typeid(unsigned int).name())
-			value = true;
-		else if (typeid(T).name() == typeid(unsigned long int).name())
-			value = true;
-		else if (typeid(T).name() == typeid(unsigned long long int).name())
-			value = true;
-		else
-			value = false;
-		}
+		typedef integral_const<T, v> type;
 		operator bool() { return value; }
 	};
 //https://www.cplusplus.com/reference/type_traits/is_integral/
-/*	template <>
-	struct is_integral<bool> : public integral_constant<bool, true> {};
+	template < typename >
+	struct is_integral : public integral_const<bool, false> {};
 	template <>
-	struct is_integral<char> : public integral_constant<bool, true> {};
+	struct is_integral<bool> : public integral_const<bool, true> {};
 	template <>
-	struct is_integral<char16_t> : public integral_constant<bool, true> {};
+	struct is_integral<char> : public integral_const<bool, true> {};
 	template <>
-	struct is_integral<char32_t> : public integral_constant<bool, true> {};
+	struct is_integral<wchar_t> : public integral_const<bool, true> {};
 	template <>
-	struct is_integral<wchar_t> : public integral_constant<bool, true> {};
+	struct is_integral<signed char> : public integral_const<bool, true> {};
 	template <>
-	struct is_integral<signed char> : public integral_constant<bool, true> {};
+	struct is_integral<short int> : public integral_const<bool, true> {};
 	template <>
-	struct is_integral<short int> : public integral_constant<bool, true> {};
+	struct is_integral<int> : public integral_const<bool, true> {};
 	template <>
-	struct is_integral<int> : public integral_constant<bool, true> {};
+	struct is_integral<long int> : public integral_const<bool, true> {};
 	template <>
-	struct is_integral<long int> : public integral_constant<bool, true> {};
+	struct is_integral<long long int> : public integral_const<bool, true> {};
 	template <>
-	struct is_integral<long long int> : public integral_constant<bool, true> {};
+	struct is_integral<unsigned char> : public integral_const<bool, true> {};
 	template <>
-	struct is_integral<unsigned char> : public integral_constant<bool, true> {};
+	struct is_integral<unsigned short int> : public integral_const<bool, true> {};
 	template <>
-	struct is_integral<unsigned short int> : public integral_constant<bool, true> {};
+	struct is_integral<unsigned int> : public integral_const<bool, true> {};
 	template <>
-	struct is_integral<unsigned int> : public integral_constant<bool, true> {};
+	struct is_integral<unsigned long int> : public integral_const<bool, true> {};
 	template <>
-	struct is_integral<unsigned long int> : public integral_constant<bool, true> {};
-	template <>
-	struct is_integral<unsigned long long int> : public integral_constant<bool, true> {};
-*/
-	template < class T >
-	struct is_integral : public integral_const<T> {};
+	struct is_integral<unsigned long long int> : public integral_const<bool, true> {};
+
 //https://www.cplusplus.com/reference/type_traits/enable_if/
 	template < bool Cond, class T = void >
 	struct enable_if {};
