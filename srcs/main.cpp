@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/01 16:01:30 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/13 18:02:17 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/05/13 18:03:50 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -89,8 +89,6 @@ int main()
 	std::cout << "x.assign(y.begin(), y.end())" << std::endl;
 	a.assign(c.begin(), c.end());
 	b.assign(d.begin(), d.end());
-//	for (unsigned long i = 0; i < a.size(); i++)
-//		std::cout << "pos " << i << ": " << a[i] << " <-> " << b[i] << std::endl;
 	cmpftstd(a, b);
 	std::cout << "v.push_back(500)\n";
 	a.push_back(500);
