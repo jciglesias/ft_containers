@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/03 15:21:58 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/13 17:59:47 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/05/16 01:42:04 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -67,7 +67,7 @@ public:
 	~vector(void) {_alloc.deallocate(this->_start, this->_size);}
 	vector & operator=(const vector & x){
 		if (*this != x){
-			this->~vector();
+			this->clear();
 			this->insert(_start, x.begin(), x.end());
 		}
 		return (*this);
@@ -76,9 +76,9 @@ public:
 **iterators
 */
 	iterator begin(){return (iterator(this->_start));}
-	const_iterator begin() const{return (iterator(this->_start));}
+	const_iterator begin() const{return (const_iterator(this->_start));}
 	iterator end(){return (iterator(this->_end));}
-	const_iterator end() const{return (iterator(this->_end));}
+	const_iterator end() const{return (const_iterator(this->_end));}
 	reverse_iterator rbegin(){return (reverse_iterator(--this->_end));}
 	const_reverse_iterator rbegin() const{return (const_reverse_iterator(--this->_end));}
 	reverse_iterator rend(){return (reverse_iterator(--this->_start));}
@@ -312,7 +312,5 @@ namespace ft{
 		x.swap(y);
 	}
 }
-
-
 
 #endif
