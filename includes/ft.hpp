@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/04/27 15:50:02 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/14 01:16:52 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/05/16 18:41:19 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -29,10 +29,6 @@ namespace ft
 
 	template < class T, class Alloc = std::allocator<T> >
 	class stack;
-
-	template < class Key, class T, class Compare = less<Key>,
-			   class Alloc = allocator<pair<const Key, T>>>
-	class map;
 /*
 **iterator struct
 */
@@ -217,48 +213,53 @@ namespace ft
 
 		first_type	first;
 		second_type	second;
-/*
-**member functions
-*/
-		pair() : first(0), second(0){}
+	/*
+	**member functions
+	*/
+		pair() : first(), second(){}
 		template <class U, class V>
 		pair(const pair<U,V> &pr) : first(pr.first), second(pr.second){}
 		pair(const first_type &a, const second_type &b) : first(a), second(b){}
 		~pair(){}
 		pair& operator=(const pair &pr){
+			if (*this == pr)
+				return *this;
 			first = pr.first;
 			second = pr.second;
 			return *this;
 		}
-/*
-**relational operators
-*/
-		template <class T1, class T2>
-		bool operator==(const pair<T1, T2> &lhs, const pair<T1,T2> &rhs){
-			return (lhs.first == rhs.first && lhs.second == rhs.second);
-		}
-		template <class T1, class T2>
-		bool operator!=(const pair<T1, T2> &lhs, const pair<T1,T2> &rhs){
-			return !(lhs == rhs);
-		}
+	};
+	/*
+	**relational operators
+	*/
+	template <class T1, class T2>
+	bool operator==(const pair<T1, T2> &lhs, const pair<T1,T2> &rhs){
+		return (lhs.first == rhs.first && lhs.second == rhs.second);
+	}
+	template <class T1, class T2>
+	bool operator!=(const pair<T1, T2> &lhs, const pair<T1,T2> &rhs){
+		return !(lhs == rhs);
+	}
 		template <class T1, class T2>
 		bool operator<(const pair<T1, T2> &lhs, const pair<T1,T2> &rhs){
 			return (lhs.first < rhs.first || (!(rhs.first < lhs.first) && lhs.second < rhs.second));
 		}
-		template <class T1, class T2>
-		bool operator<=(const pair<T1, T2> &lhs, const pair<T1,T2> &rhs){
-			return !(rhs < lhs);
-		}
-		template <class T1, class T2>
-		bool operator>(const pair<T1, T2> &lhs, const pair<T1,T2> &rhs){
-			return (rhs < lhs);
-		}
-		template <class T1, class T2>
-		bool operator>=(const pair<T1, T2> &lhs, const pair<T1,T2> &rhs){
-			return !(lhs < rhs);
-		}
-
+	template <class T1, class T2>
+	bool operator<=(const pair<T1, T2> &lhs, const pair<T1,T2> &rhs){
+		return !(rhs < lhs);
 	}
+	template <class T1, class T2>
+	bool operator>(const pair<T1, T2> &lhs, const pair<T1,T2> &rhs){
+		return (rhs < lhs);
+	}
+	template <class T1, class T2>
+	bool operator>=(const pair<T1, T2> &lhs, const pair<T1,T2> &rhs){
+		return !(lhs < rhs);
+	}
+
+	template < class Key, class T, class Compare = std::less<Key>,
+			   class Alloc = std::allocator<pair<const Key, T> > >
+	class map;
 	template < class T1, class T2 >
 	pair<T1, T2> make_pair(T1 x, T2 y){ return (pair<T1, T2>(x, y));}
 }

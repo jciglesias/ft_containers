@@ -6,14 +6,15 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/04 09:32:15 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/16 01:39:05 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/05/17 14:15:48 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef MAP_HPP
 # define MAP_HPP
 
-namespace ft{class map;}
+# include "ft.hpp"
+//# include "min_heap.hpp"
 
 template <class Key, class T, class Compare, class Alloc>
 class ft::map {
@@ -35,7 +36,7 @@ public:
 		bool operator()(const value_type &x, const value_type &y) const{
 			return comp(x.first, y.first);
 		}
-	}
+	};
 
 	typedef typename allocator_type::reference						reference;
 	typedef typename allocator_type::const_reference				const_reference;
@@ -69,7 +70,7 @@ public:
 		for (size_type i = 0; i < _size; i++)
 			_alloc.construct(_end++, *(x.begin() + i));
 	}
-	~map(){_alloc.deallocate(_capacity);}
+	~map(){_alloc.deallocate(_start, _capacity);}
 	map &operator=(const map &x){
 		if (*this != x){
 			this->clear();
@@ -80,7 +81,10 @@ public:
 /*
 **iterators
 */
-	iterator begin(){return iterator(_start);}
+	iterator begin(){
+		iterator tmp(this->_start);
+		return tmp;
+	}
 	const_iterator begin() const{return const_iterator(_start);}
 	iterator end(){return iterator(_end);}
 	const_iterator end() const{return const_iterator(_end);}
@@ -99,18 +103,18 @@ public:
 */
 	mapped_type & operator[](const key_type &k){
 		iterator tmp = this->find(k);
-		if (*tmp && (*tmp).first == k)
+		if (tmp != this->end() && (*tmp).first == k)
 			return (*tmp).second;
-		return ((this->insert(tmp, value_type(k, 0))).second);
+		return ((*(this->insert(tmp, value_type(k, 0)))).second);
 	}
 /*
 **modifiers
 */
 	pair<iterator, bool> insert(const value_type &val){
 		iterator tmp = this->lower_bound(val.first);
-		if (*tmp && (*tmp).first == val.first)
-			return (pair(tmp, false));
-		return pair(insert(tmp, val), true);
+		if (tmp != this->end() && (*tmp).first == val.first)
+			return (make_pair(tmp, false));
+		return make_pair(insert(tmp, val), true);
 	}
 	iterator insert(iterator pos, const value_type &val){
 		if ((*pos).first == val.first)
@@ -133,18 +137,28 @@ public:
 	}
 	template < class InputIterator >
 	void insert(InputIterator first, InputIterator last){
-		//insertar [first-last[
-		//verificar que no exista cada uno
+		while (first != last)
+			insert(*first++);
 	}
 	void erase(iterator pos){
-		//destroy pos
+		iterator tmp = this->end();
+		while (pos != tmp && (pos + 1) != tmp){
+			_alloc.construct(pos, *(pos + 1));
+			pos++;
+		}
+		_alloc.destroy(pos);
+		--_size;
 	}
 	size_type erase(const key_type &k){
-		//destroy element that matches k
-		//return number of elements erased
+		iterator tmp = this->find(k);
+		if (tmp == this->end())
+			return (0);
+		this->erase(tmp);
+		return (1);
 	}
 	void erase(iterator first, iterator last){
-		//destroy from [first to last[
+		while (first != last)
+			this->erase(first++);
 	}
 	void swap(map &x){
 		if (*this != x){
@@ -169,8 +183,8 @@ public:
 */
 	iterator find(const key_type &k){
 		for (size_type i = 0; i < _size; i++){
-			if ((_start + i).first == k)
-				return (iterator(_start + i));
+			if ((_start + i)->first == k)
+				return (this->begin() + i);
 		}
 		return (this->end());
 	}
@@ -190,7 +204,7 @@ public:
 	}
 	iterator lower_bound(const key_type &k){
 		for (size_type i = 0; i < _size; i++){
-			if (!_comp((_start + i).first, k))
+			if (!_comp((_start + i)->first, k))
 				return (iterator(_start + i));
 		}
 		return (this->end());
@@ -209,7 +223,7 @@ public:
 		}
 		return (this->end());
 	}
-	const_iterator upper_bound(const key_type &k){
+	const_iterator upper_bound(const key_type &k) const{
 		for (size_type i = 0; i < _size; i++){
 			if (_comp(k, (_start + i).first))
 				return (const_iterator(_start + i));
@@ -217,10 +231,10 @@ public:
 		return (this->end());
 	}
 	pair<const_iterator, const_iterator> equal_range(const key_type &k) const{
-		return pair(this->lower_bound(k), this->upper_bound(k));
+		return make_pair(this->lower_bound(k), this->upper_bound(k));
 	}
 	pair<iterator, iterator> equal_range(const key_type &k){
-		return pair(this->lower_bound(k), this->upper_bound(k));
+		return make_pair(this->lower_bound(k), this->upper_bound(k));
 	}
 /*
 **allocator
@@ -248,6 +262,6 @@ private:
 		this->_start = tmp;
 		this->_end = tmp + _size;
 	}
-}
+};
 
 #endif

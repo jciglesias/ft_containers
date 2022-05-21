@@ -6,13 +6,15 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/01 16:01:30 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/13 18:03:50 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/05/16 18:36:32 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #include "Vector.hpp"
 #include <iostream>
 #include <vector>
+#include "Map.hpp"
+#include <map>
 
 template <class T, class Alloc>
 void	cmpftstd(ft::vector<T, Alloc> a, std::vector<T, Alloc> b){
@@ -37,7 +39,7 @@ void	cmpftstd(ft::vector<T, Alloc> a, std::vector<T, Alloc> b){
 	std::cout << "OK\n";
 }
 
-int main()
+void vector_test()
 {
 	ft::vector<int> a(3, 100);
 	std::vector<int> b(3, 100);
@@ -146,6 +148,21 @@ int main()
 	a.clear();
 	b.clear();
 	cmpftstd(a, b);
+}
 
-	return 0;
+void map_test()
+{
+	ft::map<char, int> a;
+	std::map<char, int> b;
+
+	a['a'] = 10;
+	b['a'] = 10;
+	a['b'] = 20;
+	b['b'] = 20;
+}
+
+int main()
+{
+	vector_test();
+	map_test();
 }
