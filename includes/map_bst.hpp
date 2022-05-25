@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/05/18 11:29:51 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/23 00:58:32 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/05/25 11:43:50 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -80,12 +80,14 @@ public:
 	t_node<value_type> *search(t_node<value_type> *node, Key &k) {
 		t_node<value_type> *tmp = 0;
 
-		if (k == node->val.first)
-			tmp = node;
-		else if (_comp(k, node->val.first))
-			tmp = search(node->left, k);
-		else if (_comp(node->val.first, k))
-			tmp = search(node->right, k);
+		if (node != 0){
+			if (k == node->val.first)
+				tmp = node;
+			else if (_comp(k, node->val.first))
+				tmp = search(node->left, k);
+			else if (_comp(node->val.first, k))
+				tmp = search(node->right, k);
+		}
 		return (tmp);
 	}
 	bool insert(value_type &p) {
@@ -98,11 +100,11 @@ public:
 	t_node<value_type> *insert(t_node<value_type> *root, t_node<value_type> *node) {
 		if (root == 0)
 			return node;
-		if (_comp(node->val.first, root->val.first)){
+		if (root != 0 &&_comp(node->val.first, root->val.first)){
 			root->left = insert(root->left, node);
 			root->left->up = root;
 		}
-		else if (_comp(root->val.first, node->val.first)){
+		else if (root != 0 &&_comp(root->val.first, node->val.first)){
 			root->right = insert(root->right, node);
 			root->right->up = root;
 		}
@@ -112,20 +114,36 @@ public:
 		t_node<value_type> *left = node->left;
 		t_node<value_type> *right = node->right;
 
-		if (node->up->left == node)
+		if (node->up != 0 && node->up->left == node)
 			node->up->left = 0;
-		else
+		else if (node->up != 0)
 			node->up->right = 0;
+		if (node == _root)
+			_root = 0;
 		delete node;
-		if (right != 0)
+		if (right != 0){
+			right->up = 0;
 			_root = insert(_root, right);
-		if (left != 0)
+		}
+		if (left != 0){
+			left->up = 0;
 			_root = insert(_root, left);
+		}
 	}
 	void erase(Key &k) {
 		t_node<value_type> *tmp = search(k);
 
-		erase(tmp);
+		if (tmp != 0)
+			erase(tmp);
+	}
+	void erase(Key k) {
+		t_node<value_type> *tmp = search(k);
+
+		if (tmp != 0)
+			erase(tmp);
+	}
+	void print_bst(){
+		print_bst(_root);
 	}
 	void print_bst(t_node<value_type> *root){
 		if (root != 0){
