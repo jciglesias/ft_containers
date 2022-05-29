@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/04/27 15:50:02 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/16 18:41:19 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/05/27 11:13:46 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -52,6 +52,9 @@ namespace ft
 
 	template < typename T >
 	class reverse_iterator;
+
+	template < class key, class T >
+	class bst_iterator;
 /*
 **Empty classes to identify the category of an iterator
 */
