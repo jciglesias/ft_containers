@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/05/22 22:51:28 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/29 23:50:44 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/05/30 10:14:43 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -58,7 +58,6 @@ public:
 	}
 	bst_iterator		operator++(int){
 		bst_iterator tmp(this->_node);
-
 		_node = upper_bound(_node, _node);
 		if (_node == 0)
 			_node = _end;

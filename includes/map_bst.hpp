@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/05/18 11:29:51 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/29 23:14:09 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/05/30 12:20:22 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -28,7 +28,7 @@ public:
 	t_node	*right;
 	t_node() : first(), second(), up(0), left(0), right(0){}
 	t_node(const Key &k, const T &n) : first(k), second(n), up(0), left(0), right(0){}
-	t_node(const struct t_node &node) : first(node.first), second(node.second),
+	t_node(const t_node &node) : first(node.first), second(node.second),
 										up(node.up), left(node.left), right(node.right) {}
 /*	struct s_node &operator=(const struct s_node &node){
 		this->val = node.val;
@@ -72,7 +72,7 @@ public:
 	//create heap_iterator
 	typedef ft::pair<Key, T>			value_type;
 	map_bst(const Compare comp = Compare(), const Alloc &alloc = Alloc()) :
-		_comp(comp), _alloc(alloc), _root(0), _size(0){}
+		_root(0), _comp(comp), _alloc(alloc), _size(0){}
 	~map_bst(){this->erase_tree(_root);}
 	t_node<Key, T> *root(){return _root;}
 /*	t_node<Key, T> *search(Key &k) {
@@ -196,7 +196,7 @@ private:
 	t_node<Key, T> *insert(t_node<Key, T> *root, t_node<Key, T> *node) {
 		if (root == 0)
 			return node;
-		if (root != 0 &&_comp(node->first, root->first)){
+		if (root != 0 && _comp(node->first, root->first)){
 			root->left = insert(root->left, node);
 			root->left->up = root;
 		}

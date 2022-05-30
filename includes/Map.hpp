@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/04 09:32:15 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/29 23:50:58 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/05/30 12:18:27 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -14,7 +14,8 @@
 # define MAP_HPP
 
 # include "ft.hpp"
-//# include "min_heap.hpp"
+# include "map_bst.hpp"
+# include "bst_iterator.hpp"
 
 template <class Key, class T, class Compare, class Alloc>
 class ft::map {
@@ -46,10 +47,10 @@ public:
 	typedef ft::bst_iterator<const Key, const T>					const_iterator;
 	typedef	ft::reverse_iterator<iterator>							reverse_iterator;
 	typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
-	typedef	iterator::reference										reference;
-	typedef const_iterator::reference								const_reference;
-	typedef iterator::pointer										pointer;
-	typedef const_iterator::pointer									const_pointer;
+	typedef typename iterator::reference							reference;
+	typedef typename const_iterator::reference						const_reference;
+	typedef typename iterator::pointer								pointer;
+	typedef typename const_iterator::pointer						const_pointer;
 	typedef typename ft::iterator_traits<iterator>::difference_type	difference_type;
 	typedef typename allocator_type::size_type						size_type;
 /*
@@ -117,6 +118,7 @@ public:
 		return make_pair(iterator(_bst.search(val.first), _bst.end()), true);
 	}
 	iterator insert(iterator pos, const value_type &val){
+		(void)pos;
 		_bst.insert(val);
 		return (iterator(_bst.search(val.first), &_bst.end));
 	}
@@ -161,11 +163,13 @@ public:
 **operations
 */
 	iterator find(const key_type &k){
-		iterator tmp(_bst.search(k), &_bst.end);
+		pointer		n = _bst.search(k);
+		iterator	tmp(n != 0 ? n : &_bst.end, &_bst.end);
 		return (tmp);
 	}
 	const_iterator find(const key_type &k) const{
-		const_iterator tmp(_bst.search(k), &_bst.end);
+		pointer		n = _bst.search(k);
+		const_iterator tmp(n != 0 ? n : &_bst.end, &_bst.end);
 		return (tmp);
 	}
 	size_type count(const key_type &k) const{
@@ -174,30 +178,38 @@ public:
 		return (0);
 	}
 	iterator lower_bound(const key_type &k){
-		for (size_type i = 0; i < _size; i++){
-			if (!_comp((_start + i)->first, k))
-				return (iterator(_start + i));
+		iterator tmp(_bst.smallest(), &_bst.end);
+		for (size_type i = 0; i < _bst.size(); i++){
+			if (!_comp(tmp->first, k))
+				return (tmp);
+			++tmp;
 		}
 		return (this->end());
 	}
 	const_iterator lower_bound(const key_type & k) const{
-		for (size_type i = 0; i < _size; i++){
-			if (!_comp((_start + i).first, k))
-				return (const_iterator(_start + i));
+		const_iterator tmp(_bst.smallest(), &_bst.end);
+		for (size_type i = 0; i < _bst.size(); i++){
+			if (!_comp(tmp->first, k))
+				return (tmp);
+			++tmp;
 		}
 		return (this->end());
 	}
 	iterator upper_bound(const key_type &k){
-		for (size_type i = 0; i < _size; i++){
-			if (_comp(k, (_start + i).first))
-				return (iterator(_start + i));
+		iterator tmp(_bst.smallest(), &_bst.end);
+		for (size_type i = 0; i < _bst.size(); i++){
+			if (_comp(k, tmp->first))
+				return (tmp);
+			++tmp;
 		}
 		return (this->end());
 	}
 	const_iterator upper_bound(const key_type &k) const{
-		for (size_type i = 0; i < _size; i++){
-			if (_comp(k, (_start + i).first))
-				return (const_iterator(_start + i));
+		const_iterator tmp(_bst.smallest(), &_bst.end);
+		for (size_type i = 0; i < _bst.size(); i++){
+			if (_comp(k, tmp->first))
+				return (tmp);
+			++tmp;
 		}
 		return (this->end());
 	}
@@ -216,21 +228,6 @@ private:
 	map_bst<Key, T>	_bst;
 	size_type		_size;
 	key_compare		_comp;
-/*
-**own functions
-*/
-	void	reserve(size_type n){
-		if (n <= _capacity)
-			return ;
-		pointer	tmp = _alloc.allocate(n);
-
-		for (size_type i = 0; i < _size; i++)
-			_alloc.construct(tmp + i, *(_start + i));
-		_alloc.deallocate(this->_start, _capacity);
-		_capacity = n;
-		this->_start = tmp;
-		this->_end = tmp + _size;
-	}
 };
 
 #endif
