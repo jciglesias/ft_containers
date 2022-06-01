@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/05/18 11:29:51 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/30 12:20:22 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/01 16:04:56 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -28,8 +28,8 @@ public:
 	t_node	*right;
 	t_node() : first(), second(), up(0), left(0), right(0){}
 	t_node(const Key &k, const T &n) : first(k), second(n), up(0), left(0), right(0){}
-	t_node(const t_node &node) : first(node.first), second(node.second),
-										up(node.up), left(node.left), right(node.right) {}
+	t_node(const t_node &node) : first(&(node.first)), second(&(node.second)),
+								up(&(node.up)), left(&(node.left)), right(&(node.right)) {}
 /*	struct s_node &operator=(const struct s_node &node){
 		this->val = node.val;
 		this->up = node.up;
@@ -41,27 +41,27 @@ public:
 
 template < class Key, class T >
 bool operator==(const t_node<Key, T> *lhs, const t_node<Key, T> *rhs){
-	return (lhs->val == rhs->val);
+	return (lhs->first == rhs->first);
 }
 template < class Key, class T >
 bool operator!=(const t_node<Key, T> *lhs, const t_node<Key, T> *rhs){
-	return (lhs->val != rhs->val);
+	return (lhs->first != rhs->first);
 }
 template < class Key, class T >
 bool operator>(const t_node<Key, T> *lhs, const t_node<Key, T> *rhs){
-	return (lhs->val > rhs->val);
+	return (lhs->first > rhs->first);
 }
 template < class Key, class T >
 bool operator>=(const t_node<Key, T> *lhs, const t_node<Key, T> *rhs){
-	return (lhs->val >= rhs->val);
+	return (lhs->first >= rhs->first);
 }
 template < class Key, class T >
 bool operator<(const t_node<Key, T> *lhs, const t_node<Key, T> *rhs){
-	return (lhs->val < rhs->val);
+	return (lhs->first < rhs->first);
 }
 template < class Key, class T >
 bool operator<=(const t_node<Key, T> *lhs, const t_node<Key, T> *rhs){
-	return (lhs->val <= rhs->val);
+	return (lhs->first <= rhs->first);
 }
 
 
@@ -72,13 +72,20 @@ public:
 	//create heap_iterator
 	typedef ft::pair<Key, T>			value_type;
 	map_bst(const Compare comp = Compare(), const Alloc &alloc = Alloc()) :
-		_root(0), _comp(comp), _alloc(alloc), _size(0){}
-	~map_bst(){this->erase_tree(_root);}
+		_root(0), _comp(comp), _alloc(alloc), _size(0){
+		_end = new t_node<Key, T>;
+		_rend = new t_node<Key, T>;
+	}
+	~map_bst(){
+		this->erase_tree(_root);
+		delete _end;
+		delete _rend;
+	}
 	t_node<Key, T> *root(){return _root;}
 /*	t_node<Key, T> *search(Key &k) {
 		return this->search(_root, k);
 	}*/
-	unsigned long	size(){ return _size; }
+	unsigned long	size() const { return _size; }
 	t_node<Key, T> *search(Key k) {
 		return this->search(_root, k);
 	}
@@ -94,12 +101,12 @@ public:
 			return false;
 		_root = this->insert(_root, p);
 		_size++;
-		this->end.up = _root;
-		this->end.left = this->smallest();
-		this->end.right = this->biggest();
-		this->rend.up = _root;
-		this->rend.left = this->end.right;
-		this->rend.right = this->end.left;
+		this->_end->up = _root;
+		this->_end->left = this->smallest();
+		this->_end->right = this->biggest();
+		this->_rend->up = _root;
+		this->_rend->left = this->_end->right;
+		this->_rend->right = this->_end->left;
 		return true;
 	}
 	void erase(t_node<Key, T> *node) {
@@ -135,7 +142,7 @@ public:
 		if (tmp != 0)
 			erase(tmp);
 	}
-	t_node<Key, T>	*smallest(){
+	t_node<Key, T>	*smallest() {
 		t_node<Key, T> *tmp = _root;
 
 		if (tmp != 0){
@@ -144,7 +151,27 @@ public:
 		}
 		return (tmp);
 	}
-	t_node<Key, T>	*biggest(){
+	const t_node<Key, T>	*smallest() const{
+		t_node<Key, T> *tmp = _root;
+
+		if (tmp != 0){
+			while (tmp->left != 0)
+				tmp = tmp->left;
+		}
+		return (tmp);
+	}
+	t_node<Key, T>	*biggest() {
+		t_node<Key, T> *tmp = _root;
+
+		if (tmp != 0){
+			while (tmp->right != 0){
+//				std::cout << tmp->first << " bst debug\n";
+				tmp = tmp->right;
+			}
+		}
+		return (tmp);
+	}
+	const t_node<Key, T>	*biggest() const{
 		t_node<Key, T> *tmp = _root;
 
 		if (tmp != 0){
@@ -163,6 +190,19 @@ public:
 			print_bst(root->right);
 		}
 	}
+	void erase_tree(){
+		erase_tree(_root);
+		_root = 0;
+	}
+	t_node<Key, T>	*end() const{ return _end; }
+	t_node<Key, T>	*rend() const{ return _rend; }
+private:
+	t_node<Key, T>	*_root;
+	Compare			_comp;
+	Alloc			_alloc;
+	unsigned long	_size;
+	t_node<Key, T>	*_end;
+	t_node<Key, T>	*_rend;
 	void	erase_tree(t_node<Key, T> *n){
 		if (n == 0)
 			return ;
@@ -171,15 +211,10 @@ public:
 		if (n->right != 0)
 			erase_tree(n->right);
 		delete n;
+		n = 0;
+		--_size;
 		return ;
 	}
-	t_node<Key, T>	end;
-	t_node<Key, T>	rend;
-private:
-	t_node<Key, T>	*_root;
-	Compare			_comp;
-	Alloc			_alloc;
-	unsigned long	_size;
 	t_node<Key, T>	*insert(t_node<Key, T> *node, value_type &p) {
 		if (node == 0)
 			return new t_node<Key, T>(p.first, p.second);

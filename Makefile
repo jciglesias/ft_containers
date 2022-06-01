@@ -6,7 +6,7 @@
 #    By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/09 12:55:34 by jiglesia          #+#    #+#              #
-#    Updated: 2022/04/27 21:40:49 by jiglesia         ###   ########.fr        #
+#    Updated: 2022/06/01 15:03:58 by jiglesia         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -36,7 +36,7 @@ DIRLIST		=
 DIREVENT	=
 DIRLASER	=
 
-SRCS		=	main.cpp
+SRCS		=	main.cpp Vector_tests.cpp Map_tests.cpp
 CHECKER		=
 MOVES		=
 INPUT		=

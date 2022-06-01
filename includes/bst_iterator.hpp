@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/05/22 22:51:28 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/30 10:14:43 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/01 15:41:01 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -45,11 +45,12 @@ public:
 		if (this == &rhs)
 			return (*this);
 		this->_node = rhs.base();
+		this->_end = rhs.end();
 		return (*this);
 	}
 
-	reference					operator*(void) {return (_node);}
-	pointer						operator->(void) {return (_node);}
+	pair<Key, T>	operator*(void) {return (make_pair(_node->first, _node->second));}
+	pointer			operator->(void) {return (_node);}
 	bst_iterator &	operator++(void){
 		_node = upper_bound(_node, _node);
 		if (_node == 0)
@@ -57,21 +58,23 @@ public:
 		return (*this);
 	}
 	bst_iterator		operator++(int){
-		bst_iterator tmp(this->_node);
+		bst_iterator tmp(this->_node, _end);
 		_node = upper_bound(_node, _node);
-		if (_node == 0)
+		if (_node == 0){
 			_node = _end;
+		}
 		return (tmp);
 	}
 	bst_iterator &	operator--(void){
-		if (_node == _end)
+		if (_node == _end){
 			_node = _end->right;
+		}
 		else
 			this->_node = search_behind(this->_node, _node);
 		return (*this);
 	}
 	bst_iterator		operator--(int){
-		bst_iterator tmp(this->_node);
+		bst_iterator tmp(this->_node, _end);
 
 		if (_node == _end)
 			_node = _end->right;
@@ -80,14 +83,14 @@ public:
 		return (tmp);
 	}
 	bst_iterator		operator+(difference_type n) const {
-		bst_iterator	tmp(_node);
+		bst_iterator	tmp(_node, _end);
 
 		for (difference_type i = 0; i < n; i++)
 			++tmp;
 		return (tmp);
 	}
 	bst_iterator		operator-(difference_type n) const {
-		bst_iterator	tmp(_node);
+		bst_iterator	tmp(_node, _end);
 
 		for (difference_type i = 0; i < n; i++)
 			--tmp;
@@ -107,6 +110,9 @@ public:
 	operator bst_iterator<const Key, const T> () const{
 		return (bst_iterator<const Key, const T>(this->_node));
 	}
+/*	operator bst_iterator<Key, T> () {
+		return (bst_iterator<Key, T>(this->_node));
+		}*/
 private:
 	pointer	_node;
 	pointer	_end;

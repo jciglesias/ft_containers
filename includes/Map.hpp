@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/04 09:32:15 by jiglesia          #+#    #+#             //
-//   Updated: 2022/05/30 12:18:27 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/01 16:05:19 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -65,32 +65,36 @@ public:
 		while (first != last)
 			_bst.insert(*first++);
 	}
-	map(const map &x) : _alloc(x.get_allocator()), _size(x.size()), _comp(x.key_comp()){
-		for (size_type i = 0; i < _size; i++)
-			_bst.insert(*(x.begin() + i));
+	map(map &x) : _alloc(x.get_allocator()), _size(x.size()), _comp(x.key_comp()){
+		map::iterator it = x.begin();
+		for (size_type i = 0; i < _size; i++){
+			_bst.insert(make_pair(it->first, it->second));
+			it++;
+		}
 	}
 	~map(){}
-	map &operator=(const map &x){
-		if (*this != x){
+	map &operator=(map &x){
+//		if (*this != x){
 			this->clear();
-			this->insret(x.begin(), x.end());
-		}
+			if (x.size())
+				this->insert(x.begin(), x.end());
+//		}
 		return *this;
 	}
 /*
 **iterators
 */
 	iterator begin(){
-		iterator tmp(iterator(this->_bst.smallest(), _bst.end));
+		iterator tmp(iterator(this->_bst.smallest(), _bst.end()));
 		return tmp;
 	}
-	const_iterator begin() const{return const_iterator(_bst.smallest());}
-	iterator end(){return iterator(&_bst.end, &_bst.end);}
-	const_iterator end() const{return const_iterator(&_bst.end, &_bst.end);}
-	reverse_iterator rbegin(){return reverse_iterator(_bst.biggest(), &_bst.rend);}
-	const_reverse_iterator rbegin() const{return const_reverse_iterator(_bst.biggest(), &_bst.rend);}
-	reverse_iterator rend(){return reverse_iterator(&_bst.rend, &_bst.rend);}
-	const_reverse_iterator rend() const{return const_reverse_iterator(&_bst.rend, &_bst.rend);}
+	const_iterator begin() const{ return const_iterator(_bst.smallest(), _bst.end());}
+	iterator end(){return iterator(_bst.end(), _bst.end());}
+	const_iterator end() const{return const_iterator(_bst.end(), _bst.end());}
+	reverse_iterator rbegin(){return reverse_iterator(_bst.biggest(), _bst.rend);}
+	const_reverse_iterator rbegin() const{return const_reverse_iterator(_bst.biggest(), _bst.rend);}
+	reverse_iterator rend(){return reverse_iterator(_bst.rend, _bst.rend);}
+	const_reverse_iterator rend() const{return const_reverse_iterator(_bst.rend, _bst.rend);}
 /*
 **capacity
 */
@@ -113,26 +117,28 @@ public:
 **modifiers
 */
 	pair<iterator, bool> insert(const value_type &val){
-		if (_bst.insert(val) == false)
+		if (_bst.insert(val) == false){
 			return (make_pair(iterator(_bst.search(val.first), _bst.end()), false));
+		}
 		return make_pair(iterator(_bst.search(val.first), _bst.end()), true);
 	}
 	iterator insert(iterator pos, const value_type &val){
 		(void)pos;
 		_bst.insert(val);
-		return (iterator(_bst.search(val.first), &_bst.end));
+		return (iterator(_bst.search(val.first), _bst.end()));
 	}
 	template < class InputIterator >
 	void insert(InputIterator first, InputIterator last){
-		while (first != last)
-			insert(*first++);
+		while (first != last){
+			insert(*(first++));
+		}
 	}
 	void erase(iterator pos){
 		_bst.erase(pos.base());
 	}
 	size_type erase(const key_type &k){
 		iterator tmp = this->find(k);
-		if (tmp == 0)
+		if (tmp == this->end())
 			return (0);
 		this->erase(tmp);
 		return (1);
@@ -143,15 +149,15 @@ public:
 		_size = _bst.size();
 	}
 	void swap(map &x){
-		if (*this != x){
+//		if (*this != x){
 			map tmp(x);
 
 			x = *this;
 			*this = tmp;
-		}
+//		}
 	}
 	void clear(){
-		_bst.erase_tree(_bst.root());
+		_bst.erase_tree();
 		_size = 0;
 	}
 /*
@@ -164,12 +170,12 @@ public:
 */
 	iterator find(const key_type &k){
 		pointer		n = _bst.search(k);
-		iterator	tmp(n != 0 ? n : &_bst.end, &_bst.end);
+		iterator	tmp(n != 0 ? n : _bst.end(), _bst.end());
 		return (tmp);
 	}
 	const_iterator find(const key_type &k) const{
 		pointer		n = _bst.search(k);
-		const_iterator tmp(n != 0 ? n : &_bst.end, &_bst.end);
+		const_iterator tmp(n != 0 ? n : _bst.end(), _bst.end());
 		return (tmp);
 	}
 	size_type count(const key_type &k) const{
@@ -178,7 +184,7 @@ public:
 		return (0);
 	}
 	iterator lower_bound(const key_type &k){
-		iterator tmp(_bst.smallest(), &_bst.end);
+		iterator tmp(_bst.smallest(), _bst.end());
 		for (size_type i = 0; i < _bst.size(); i++){
 			if (!_comp(tmp->first, k))
 				return (tmp);
@@ -187,7 +193,7 @@ public:
 		return (this->end());
 	}
 	const_iterator lower_bound(const key_type & k) const{
-		const_iterator tmp(_bst.smallest(), &_bst.end);
+		const_iterator tmp(_bst.smallest(), _bst.end());
 		for (size_type i = 0; i < _bst.size(); i++){
 			if (!_comp(tmp->first, k))
 				return (tmp);
@@ -196,7 +202,7 @@ public:
 		return (this->end());
 	}
 	iterator upper_bound(const key_type &k){
-		iterator tmp(_bst.smallest(), &_bst.end);
+		iterator tmp(_bst.smallest(), _bst.end());
 		for (size_type i = 0; i < _bst.size(); i++){
 			if (_comp(k, tmp->first))
 				return (tmp);
@@ -205,7 +211,7 @@ public:
 		return (this->end());
 	}
 	const_iterator upper_bound(const key_type &k) const{
-		const_iterator tmp(_bst.smallest(), &_bst.end);
+		const_iterator tmp(_bst.smallest(), _bst.end());
 		for (size_type i = 0; i < _bst.size(); i++){
 			if (_comp(k, tmp->first))
 				return (tmp);
