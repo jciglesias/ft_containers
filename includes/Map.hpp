@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/04 09:32:15 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/01 16:05:19 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/02 16:10:14 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,6 +16,7 @@
 # include "ft.hpp"
 # include "map_bst.hpp"
 # include "bst_iterator.hpp"
+# include "bst_reverse_iterator.hpp"
 
 template <class Key, class T, class Compare, class Alloc>
 class ft::map {
@@ -27,6 +28,7 @@ public:
 	typedef Alloc					allocator_type;
 
 	class value_compare{
+		friend class map<Key, T, Compare, Alloc>;
 	protected:
 		key_compare	comp;
 		value_compare(key_compare c) : comp(c) {}
@@ -45,12 +47,14 @@ public:
 //	typedef typename allocator_type::const_pointer					const_pointer;
 	typedef	ft::bst_iterator<Key, T>								iterator;
 	typedef ft::bst_iterator<const Key, const T>					const_iterator;
-	typedef	ft::reverse_iterator<iterator>							reverse_iterator;
-	typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
+	typedef	ft::bst_reverse_iterator<iterator>							reverse_iterator;
+	typedef ft::bst_reverse_iterator<const_iterator>					const_reverse_iterator;
 	typedef typename iterator::reference							reference;
 	typedef typename const_iterator::reference						const_reference;
-	typedef typename iterator::pointer								pointer;
-	typedef typename const_iterator::pointer						const_pointer;
+//	typedef typename iterator::pointer								pointer;
+	typedef t_node<value_type>*										pointer;
+	typedef t_node<const value_type>*								const_pointer;
+//	typedef typename const_iterator::pointer						const_pointer;
 	typedef typename ft::iterator_traits<iterator>::difference_type	difference_type;
 	typedef typename allocator_type::size_type						size_type;
 /*
@@ -90,11 +94,21 @@ public:
 	}
 	const_iterator begin() const{ return const_iterator(_bst.smallest(), _bst.end());}
 	iterator end(){return iterator(_bst.end(), _bst.end());}
-	const_iterator end() const{return const_iterator(_bst.end(), _bst.end());}
-	reverse_iterator rbegin(){return reverse_iterator(_bst.biggest(), _bst.rend);}
-	const_reverse_iterator rbegin() const{return const_reverse_iterator(_bst.biggest(), _bst.rend);}
-	reverse_iterator rend(){return reverse_iterator(_bst.rend, _bst.rend);}
-	const_reverse_iterator rend() const{return const_reverse_iterator(_bst.rend, _bst.rend);}
+	const_iterator end() const{
+		return const_iterator(_bst.end(), _bst.end());
+	}
+	reverse_iterator rbegin(){
+		return reverse_iterator(iterator(_bst.biggest(), _bst.rend()));
+	}
+	const_reverse_iterator rbegin() const{
+		return const_reverse_iterator(iterator(_bst.biggest(), _bst.rend()));
+	}
+	reverse_iterator rend(){
+		return reverse_iterator(iterator(_bst.rend(), _bst.rend()));
+	}
+	const_reverse_iterator rend() const{
+		return const_reverse_iterator(iterator(_bst.rend(), _bst.rend()));
+	}
 /*
 **capacity
 */
@@ -111,7 +125,7 @@ public:
 			_bst.insert(make_pair(k,0));
 			tmp = _bst.search(k);
 		}
-		return (tmp->second);
+		return (tmp->val.second);
 	}
 /*
 **modifiers
@@ -163,7 +177,9 @@ public:
 /*
 **observers
 */
-	key_compare key_comp() const{ return _comp;}
+	key_compare key_comp() const{
+		return _comp;
+	}
 	value_compare value_comp()const{ return value_compare(_comp);}
 /*
 **operations

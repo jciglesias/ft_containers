@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/06/01 15:01:31 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/01 15:27:44 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/02 16:31:55 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -50,10 +50,10 @@ void map_test(){
 	b['a'] = 10;
 	a['b'] = 20;
 	b['b'] = 20;
-	a['c'] = 10;
-	b['c'] = 10;
-	a['d'] = 20;
-	b['d'] = 20;
+	a['c'] = 30;
+	b['c'] = 30;
+	a['d'] = 40;
+	b['d'] = 40;
 	std::cout << "map['x'] = y:\n";
 	cmpmap(a, b);
 	a.insert(ft::make_pair('e', 30));
@@ -89,4 +89,39 @@ void map_test(){
 	b.swap(d);
 	std::cout << "map.swap(map):\n";
 	cmpmap(c, d);
+	std::cout << "map.key_comp()(map.begin()->first, map.rbegin()->first):\n";
+	if (c.key_comp()(c.begin()->first, (c.rbegin())->first) == d.key_comp()(d.begin()->first, d.rbegin()->first))
+		std::cout << "OK\n";
+	else
+		std::cout << "KO\n";
+	std::cout << "map.value_comp()(*map.begin(), *map.rbegin()):\n";
+	if (c.value_comp()(*c.begin(), *c.rbegin()) == d.value_comp()(*d.begin(), *d.rbegin()))
+		std::cout << "OK\n";
+	else
+		std::cout << "KO\n";
+	std::cout << "map.find('x'):\n";
+	if ((*(c.find('b'))).second == (*(d.find('b'))).second)
+		std::cout << "OK\n";
+	else
+		std::cout << "KO\n";
+	std::cout << "map.count('x'):\n";
+	if (c.count('b') == d.count('b'))
+		std::cout << "OK\n";
+	else
+		std::cout << "KO\n";
+	std::cout << "map.lower_bound('x'):\n";
+	if ((*(c.lower_bound('b'))).second == (*(d.lower_bound('b'))).second)
+		std::cout << "OK\n";
+	else
+		std::cout << "KO\n";
+	std::cout << "map.upper_bound('x'):\n";
+	if ((*(c.upper_bound('b'))).second == (*(d.upper_bound('b'))).second)
+		std::cout << "OK\n";
+	else
+		std::cout << "KO\n";
+	std::cout << "map.equal_range('x'):\n";
+	if ((c.equal_range('b')).second->second == (d.equal_range('b')).second->second)
+		std::cout << "OK\n";
+	else
+		std::cout << "KO\n";
 }

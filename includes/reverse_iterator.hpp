@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/04/30 10:38:49 by jiglesia          #+#    #+#             //
-//   Updated: 2022/04/30 15:32:59 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/02 11:12:35 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -53,7 +53,7 @@ public:
 */
 	reference			operator*(void) const {return (*(this->_i - 1));}
 	reference			operator[](difference_type n) const {return (*(this->_i + n));}
-	pointer				operator->(void) const {return (this->_i);}
+	pointer				operator->(void) const {return (this->_i.base());}
 	reverse_iterator &	operator++(void)
 		{
 			--this->_i;

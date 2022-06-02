@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/05/18 11:29:51 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/01 16:04:56 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/02 16:26:41 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,17 +18,18 @@
 //https://en.wikipedia.org/wiki/Sorting_algorithm
 //https://www.geeksforgeeks.org/tree-sort/
 
-template < class Key, class T >
+template < class T >
 class t_node{
 public:
-	Key		first;
-	T		second;
+//	Key		first;
+//	T		second;
+	T		val;
 	t_node	*up;
 	t_node	*left;
 	t_node	*right;
-	t_node() : first(), second(), up(0), left(0), right(0){}
-	t_node(const Key &k, const T &n) : first(k), second(n), up(0), left(0), right(0){}
-	t_node(const t_node &node) : first(&(node.first)), second(&(node.second)),
+	t_node() : val(), up(0), left(0), right(0){}
+	t_node(const T &n) : val(n), up(0), left(0), right(0){}
+	t_node(const t_node &node) : val(&(node.val)),
 								up(&(node.up)), left(&(node.left)), right(&(node.right)) {}
 /*	struct s_node &operator=(const struct s_node &node){
 		this->val = node.val;
@@ -39,29 +40,29 @@ public:
 	~t_node(){}
 };
 
-template < class Key, class T >
-bool operator==(const t_node<Key, T> *lhs, const t_node<Key, T> *rhs){
-	return (lhs->first == rhs->first);
+template < class T >
+bool operator==(const t_node<T> *lhs, const t_node<T> *rhs){
+	return (lhs->val == rhs->val);
 }
-template < class Key, class T >
-bool operator!=(const t_node<Key, T> *lhs, const t_node<Key, T> *rhs){
-	return (lhs->first != rhs->first);
+template < class T >
+bool operator!=(const t_node<T> *lhs, const t_node<T> *rhs){
+	return (lhs->val != rhs->val);
 }
-template < class Key, class T >
-bool operator>(const t_node<Key, T> *lhs, const t_node<Key, T> *rhs){
-	return (lhs->first > rhs->first);
+template < class T >
+bool operator>(const t_node<T> *lhs, const t_node<T> *rhs){
+	return (lhs->val > rhs->val);
 }
-template < class Key, class T >
-bool operator>=(const t_node<Key, T> *lhs, const t_node<Key, T> *rhs){
-	return (lhs->first >= rhs->first);
+template < class T >
+bool operator>=(const t_node<T> *lhs, const t_node<T> *rhs){
+	return (lhs->val >= rhs->val);
 }
-template < class Key, class T >
-bool operator<(const t_node<Key, T> *lhs, const t_node<Key, T> *rhs){
-	return (lhs->first < rhs->first);
+template < class T >
+bool operator<(const t_node<T> *lhs, const t_node<T> *rhs){
+	return (lhs->val < rhs->val);
 }
-template < class Key, class T >
-bool operator<=(const t_node<Key, T> *lhs, const t_node<Key, T> *rhs){
-	return (lhs->first <= rhs->first);
+template < class T >
+bool operator<=(const t_node<T> *lhs, const t_node<T> *rhs){
+	return (lhs->val <= rhs->val);
 }
 
 
@@ -73,20 +74,23 @@ public:
 	typedef ft::pair<Key, T>			value_type;
 	map_bst(const Compare comp = Compare(), const Alloc &alloc = Alloc()) :
 		_root(0), _comp(comp), _alloc(alloc), _size(0){
-		_end = new t_node<Key, T>;
-		_rend = new t_node<Key, T>;
+		_end = new t_node<value_type>;
+		_rend = new t_node<value_type>;
 	}
 	~map_bst(){
 		this->erase_tree(_root);
 		delete _end;
 		delete _rend;
 	}
-	t_node<Key, T> *root(){return _root;}
-/*	t_node<Key, T> *search(Key &k) {
+	t_node<value_type> *root(){return _root;}
+/*	t_node<value_type> *search(Key &k) {
 		return this->search(_root, k);
 	}*/
 	unsigned long	size() const { return _size; }
-	t_node<Key, T> *search(Key k) {
+	t_node<value_type> *search(Key k) {
+		return this->search(_root, k);
+	}
+	t_node<value_type> *search(const Key k) const{
 		return this->search(_root, k);
 	}
 /*	bool insert(value_type &p) {
@@ -109,9 +113,9 @@ public:
 		this->_rend->right = this->_end->left;
 		return true;
 	}
-	void erase(t_node<Key, T> *node) {
-		t_node<Key, T> *left = node->left;
-		t_node<Key, T> *right = node->right;
+	void erase(t_node<value_type> *node) {
+		t_node<value_type> *left = node->left;
+		t_node<value_type> *right = node->right;
 
 		if (node->up != 0 && node->up->left == node)
 			node->up->left = 0;
@@ -131,19 +135,19 @@ public:
 		}
 	}
 /*	void erase(Key &k) {
-		t_node<Key, T> *tmp = search(k);
+		t_node<value_type> *tmp = search(k);
 
 		if (tmp != 0)
 			erase(tmp);
 	}*/
 	void erase(Key k) {
-		t_node<Key, T> *tmp = search(k);
+		t_node<value_type> *tmp = search(k);
 
 		if (tmp != 0)
 			erase(tmp);
 	}
-	t_node<Key, T>	*smallest() {
-		t_node<Key, T> *tmp = _root;
+	t_node<value_type>	*smallest() {
+		t_node<value_type> *tmp = _root;
 
 		if (tmp != 0){
 			while (tmp->left != 0)
@@ -151,8 +155,8 @@ public:
 		}
 		return (tmp);
 	}
-	const t_node<Key, T>	*smallest() const{
-		t_node<Key, T> *tmp = _root;
+	const t_node<value_type>	*smallest() const{
+		t_node<value_type> *tmp = _root;
 
 		if (tmp != 0){
 			while (tmp->left != 0)
@@ -160,8 +164,8 @@ public:
 		}
 		return (tmp);
 	}
-	t_node<Key, T>	*biggest() {
-		t_node<Key, T> *tmp = _root;
+	t_node<value_type>	*biggest() {
+		t_node<value_type> *tmp = _root;
 
 		if (tmp != 0){
 			while (tmp->right != 0){
@@ -171,8 +175,8 @@ public:
 		}
 		return (tmp);
 	}
-	const t_node<Key, T>	*biggest() const{
-		t_node<Key, T> *tmp = _root;
+	const t_node<value_type>	*biggest() const{
+		t_node<value_type> *tmp = _root;
 
 		if (tmp != 0){
 			while (tmp->right != 0)
@@ -183,10 +187,10 @@ public:
 	void print_bst(){
 		print_bst(_root);
 	}
-	void print_bst(t_node<Key, T> *root){
+	void print_bst(t_node<value_type> *root){
 		if (root != 0){
 			print_bst(root->left);
-			std::cout << root->second << std::endl;
+			std::cout << root->val.second << std::endl;
 			print_bst(root->right);
 		}
 	}
@@ -194,16 +198,16 @@ public:
 		erase_tree(_root);
 		_root = 0;
 	}
-	t_node<Key, T>	*end() const{ return _end; }
-	t_node<Key, T>	*rend() const{ return _rend; }
+	t_node<value_type>	*end() const{ return _end; }
+	t_node<value_type>	*rend() const{ return _rend; }
 private:
-	t_node<Key, T>	*_root;
+	t_node<value_type>	*_root;
 	Compare			_comp;
 	Alloc			_alloc;
 	unsigned long	_size;
-	t_node<Key, T>	*_end;
-	t_node<Key, T>	*_rend;
-	void	erase_tree(t_node<Key, T> *n){
+	t_node<value_type>	*_end;
+	t_node<value_type>	*_rend;
+	void	erase_tree(t_node<value_type> *n){
 		if (n == 0)
 			return ;
 		if (n->left != 0)
@@ -215,41 +219,54 @@ private:
 		--_size;
 		return ;
 	}
-	t_node<Key, T>	*insert(t_node<Key, T> *node, value_type &p) {
+	t_node<value_type>	*insert(t_node<value_type> *node, value_type &p) {
 		if (node == 0)
-			return new t_node<Key, T>(p.first, p.second);
-		if (_comp(p.first, node->first)){
+			return new t_node<value_type>(p);
+		if (_comp(p.first, node->val.first)){
 			node->left = insert(node->left, p);
 			node->left->up = node;
 		}
-		else if (_comp(node->first, p.first)){
+		else if (_comp(node->val.first, p.first)){
 			node->right = insert(node->right, p);
 			node->right->up = node;
 		}
 		return node;
 	}
-	t_node<Key, T> *insert(t_node<Key, T> *root, t_node<Key, T> *node) {
+	t_node<value_type> *insert(t_node<value_type> *root, t_node<value_type> *node) {
 		if (root == 0)
 			return node;
-		if (root != 0 && _comp(node->first, root->first)){
+		if (root != 0 && _comp(node->val.first, root->val.first)){
 			root->left = insert(root->left, node);
 			root->left->up = root;
 		}
-		else if (root != 0 &&_comp(root->first, node->first)){
+		else if (root != 0 &&_comp(root->val.first, node->val.first)){
 			root->right = insert(root->right, node);
 			root->right->up = root;
 		}
 		return root;
 	}
-	t_node<Key, T> *search(t_node<Key, T> *node, Key &k) {
-		t_node<Key, T> *tmp = 0;
+	t_node<value_type> *search(t_node<value_type> *node, Key &k) {
+		t_node<value_type> *tmp = 0;
 
 		if (node != 0){
-			if (k == node->first)
+			if (k == node->val.first)
 				tmp = node;
-			else if (_comp(k, node->first))
+			else if (_comp(k, node->val.first))
 				tmp = search(node->left, k);
-			else if (_comp(node->first, k))
+			else if (_comp(node->val.first, k))
+				tmp = search(node->right, k);
+		}
+		return (tmp);
+	}
+	t_node<value_type> *search(t_node<value_type> *node, const Key &k) const{
+		t_node<value_type> *tmp = 0;
+
+		if (node != 0){
+			if (k == node->val.first)
+				tmp = node;
+			else if (_comp(k, node->val.first))
+				tmp = search(node->left, k);
+			else if (_comp(node->val.first, k))
 				tmp = search(node->right, k);
 		}
 		return (tmp);
