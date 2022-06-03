@@ -6,7 +6,7 @@
 #    By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/09 12:55:34 by jiglesia          #+#    #+#              #
-#    Updated: 2022/06/01 15:03:58 by jiglesia         ###   ########.fr        #
+#    Updated: 2022/06/03 16:42:46 by jiglesia         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -29,31 +29,24 @@ INC_LIB		=
 #***************** SRC* *******************#
 
 DIRSRCS		=	./srcs/
-DIRCHEC		=
-DIRMV		=
-DIRINPUT	=
-DIRLIST		=
-DIREVENT	=
-DIRLASER	=
+DIRSTD		=	$(DIRSRCS)/stdtest/
 
-SRCS		=	main.cpp Vector_tests.cpp Map_tests.cpp
-CHECKER		=
-MOVES		=
-INPUT		=
-LIST		=
-EVENTS		=
-LOADING		=
+SRCS		=	ft_main.cpp
+STDTEST		=	std_main.cpp
 
 FTSRC		=	$(SRCS)
-STDSRC		=	$(SRCS)
+STDSRC		=	$(STDTEST)
 
 #***************** DEPS ******************#
 
 DIROBJ		=	./depo/
 
 OAUX		=	$(FTSRC:%=$(DIROBJ)%)
+CAUX		=	$(STDSRC:%=$(DIROBJ)%)
 DEPS		=	$(OAUX:.cpp=.d)
+CDEPS		=	$(CAUX:.cpp=.d)
 OBJS		=	$(OAUX:.cpp=.o)
+COBJS		=	$(CAUX:.cpp=.o)
 
 ifdef FLAGS
 	ifeq ($(FLAGS), no)
@@ -75,33 +68,19 @@ ECHO		=	/bin/echo -e
 %.o		:		../$(DIRSRCS)/%.cpp
 				$(CC) $(CFLAGS) $(INCLUDE) -MMD -o $@ -c $<
 
-%.o		:		../$(DIRCHEC)/%.cpp
-				$(CC) $(CFLAGS) $(INCLUDE) -MMD -o $@ -c $<
-
-%.o		:		../$(DIRMV)/%.cpp
-				$(CC) $(CFLAGS) $(INCLUDE) -MMD -o $@ -c $<
-
-%.o		:		../$(DIRINPUT)/%.cpp
-				$(CC) $(CFLAGS) $(INCLUDE) -MMD -o $@ -c $<
-
-%.o		:		../$(DIRLIST)/%.cpp
-				$(CC) $(CFLAGS) $(INCLUDE) -MMD -o $@ -c $<
-
-%.o		:		../$(DIREVENT)/%.cpp
-				$(CC) $(CFLAGS) $(INCLUDE) -MMD -o $@ -c $<
-
-%.o		:		../$(DIRLASER)/%.cpp
+%.o		:		../$(DIRSTD)/%.cpp
 				$(CC) $(CFLAGS) $(INCLUDE) -MMD -o $@ -c $<
 
 #************************ MAIN COMPILATION *************************
 
-$(NAME)	:		$(OBJS)
+$(NAME)	:		$(OBJS) $(COBJS)
 				$(CC)  $(INCLUDE) $(CFLAGS) -o $(NAME) $(OBJS) $(INC_LIB)
-				@$(ECHO) '> Compiled'
-
-checker	:		$(COBJS)
 				$(CC)  $(INCLUDE) $(CFLAGS) -o $(CHNAME) $(COBJS) $(INC_LIB)
-				@$(ECHO) '> Compiled'
+				@$(ECHO) '> Compiled'				@$(ECHO) '> Compiled'
+
+#stdtest	:		$(COBJS)
+#				$(CC)  $(INCLUDE) $(CFLAGS) -o $(CHNAME) $(COBJS) $(INC_LIB)
+#				@$(ECHO) '> Compiled'
 
 clean	:
 				@($(RM) $(OBJS))

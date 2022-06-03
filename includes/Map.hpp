@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/04 09:32:15 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/02 16:10:14 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/03 17:25:28 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -124,6 +124,7 @@ public:
 		if (tmp == 0){
 			_bst.insert(make_pair(k,0));
 			tmp = _bst.search(k);
+			_size++;
 		}
 		return (tmp->val.second);
 	}
@@ -145,10 +146,12 @@ public:
 	void insert(InputIterator first, InputIterator last){
 		while (first != last){
 			insert(*(first++));
+			_size++;
 		}
 	}
 	void erase(iterator pos){
 		_bst.erase(pos.base());
+		_size--;
 	}
 	size_type erase(const key_type &k){
 		iterator tmp = this->find(k);
