@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/04 09:32:15 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/03 17:25:28 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/03 17:46:07 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -114,7 +114,7 @@ public:
 */
 	bool empty(){return (_size == 0);}
 	size_type size() const{return _bst.size();}
-	size_type max_size() const{return _alloc.max_size();}
+	size_type max_size() const{return (std::allocator< t_node<value_type> >()).max_size();}
 /*
 **element access
 */

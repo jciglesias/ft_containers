@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/06/03 16:37:37 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/03 17:02:06 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/03 17:49:19 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -20,12 +20,7 @@ template < typename T >
 void cmpmap(T &m){
 	std::cout << m.size() << std::endl;
 	std::cout << m.empty() << std::endl;
-/*	if (a.max_size() != b.max_size()){
-		std::cout << "ft max_size = " << a.max_size() << std::endl;
-		std::cout << "std max_size = " << b.max_size() << std::endl;
-		return ;
-	}
-*/
+//	std::cout << m.max_size() << std::endl;
 	typename T::iterator mit = m.begin();
 	for (unsigned long i = 0; i < m.size(); i++){
 		std::cout << "[" << mit->first << "] = " << mit->second << std::endl;
