@@ -6,7 +6,7 @@
 #    By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/09 12:55:34 by jiglesia          #+#    #+#              #
-#    Updated: 2022/06/03 16:42:46 by jiglesia         ###   ########.fr        #
+#    Updated: 2022/06/04 15:43:11 by jiglesia         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -16,12 +16,16 @@ CHNAME		=	std_containers
 #****************** INC *******************#
 # General
 INC			=	./includes/
+INCC		=	./includes/containers/
+INCI		=	./includes/iterators/
+INCB		=	./includes/binary_search_tree/
+INCT		=	./includes/tests/
 
 # Libft
 SUB_MAKE	=
 INCFT		=
 
-INCLUDE		=	-I $(INC)
+INCLUDE		=	-I $(INC) -I $(INCC) -I $(INCI) -I $(INCB) -I $(INCT)
 
 INC_LIB		=
 
