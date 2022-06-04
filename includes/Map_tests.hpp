@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/06/03 16:37:37 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/03 17:49:19 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/04 15:14:22 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -31,10 +31,12 @@ void cmpmap(T &m){
 template < class T >
 void map_test(T &m){
 	std::cout << "map['x'] = y:\n";
-	m['a'] = 10;
-	m['b'] = 20;
-	m['c'] = 30;
-	m['d'] = 40;
+//	m['a'] = 10;
+//	m['b'] = 20;
+//	m['c'] = 30;
+//	m['d'] = 40;
+	for (int i = 0; i < 1000; i++)
+		m[i] = i;
 	cmpmap(m);
 	std::cout << "map.insert(iterator, iterator):\n";
 	T c;
