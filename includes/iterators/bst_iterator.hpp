@@ -6,25 +6,25 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/05/22 22:51:28 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/02 15:50:07 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/23 12:24:37 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef BST_ITERATOR_HPP
 # define BST_ITERATOR_HPP
 
-# include "ft.hpp"
-# include "map_bst.hpp"
+# include "../ft.hpp"
+# include "../binary_search_tree/map_bst.hpp"
 //https://en.cppreference.com/w/cpp/iterator/bst_iterator
 //namespace ft {class bst_iterator;}
 
 template < class Key, class T >
-class ft::bst_iterator : public ft::iterator< ft::random_access_iterator_tag, pair<Key, T> >
+class ft::bst_iterator : public ft::iterator< ft::random_access_iterator_tag, ft::pair<const Key, T> >
 {
 public:
-	typedef typename ft::iterator<ft::random_access_iterator_tag, pair<Key, T> >	iterator;
+	typedef typename ft::iterator<ft::random_access_iterator_tag, ft::pair<const Key, T> >	iterator;
 	typedef typename iterator::value_type								value_type;
-	typedef t_node<value_type>*												t_pointer;
+	typedef t_node<value_type>*											t_pointer;
 	typedef typename iterator::difference_type							difference_type;
 	typedef typename iterator::pointer									pointer;
 	typedef typename iterator::reference								reference;

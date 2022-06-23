@@ -6,16 +6,16 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/03 15:21:58 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/03 11:50:42 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/21 11:17:15 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-# include "ft.hpp"
-# include "random_access_iterator.hpp"
-# include "reverse_iterator.hpp"
+# include "../ft.hpp"
+# include "../iterators/random_access_iterator.hpp"
+# include "../iterators/reverse_iterator.hpp"
 
 template < class T, class Alloc >
 class ft::vector

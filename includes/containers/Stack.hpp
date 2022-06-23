@@ -6,14 +6,14 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/04 09:30:11 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/03 11:55:48 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/21 11:17:58 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef STACK_HPP
 # define STACK_HPP
 
-# include "ft.hpp"
+# include "../ft.hpp"
 # include "Vector.hpp"
 
 template < class T, class Container >

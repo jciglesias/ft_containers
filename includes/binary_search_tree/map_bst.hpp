@@ -6,14 +6,14 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/05/18 11:29:51 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/02 16:26:41 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/23 12:27:32 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef MAP_BST_HPP
 # define MAP_BST_HPP
 
-# include "ft.hpp"
+# include "../ft.hpp"
 
 //https://en.wikipedia.org/wiki/Sorting_algorithm
 //https://www.geeksforgeeks.org/tree-sort/
@@ -71,7 +71,7 @@ template < class Key, class T, class Compare = std::less<Key>,
 class map_bst{
 public:
 	//create heap_iterator
-	typedef ft::pair<Key, T>			value_type;
+	typedef ft::pair<const Key, T>			value_type;
 	map_bst(const Compare comp = Compare(), const Alloc &alloc = Alloc()) :
 		_root(0), _comp(comp), _alloc(alloc), _size(0){
 		_end = new t_node<value_type>;
@@ -155,7 +155,7 @@ public:
 		}
 		return (tmp);
 	}
-	const t_node<value_type>	*smallest() const{
+	t_node<value_type>	*smallest() const{
 		t_node<value_type> *tmp = _root;
 
 		if (tmp != 0){
@@ -175,7 +175,7 @@ public:
 		}
 		return (tmp);
 	}
-	const t_node<value_type>	*biggest() const{
+	t_node<value_type>	*biggest() const{
 		t_node<value_type> *tmp = _root;
 
 		if (tmp != 0){
