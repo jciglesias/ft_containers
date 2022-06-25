@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/04 09:32:15 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/23 12:26:05 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/24 18:03:08 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -64,7 +64,7 @@ public:
 		while (first != last)
 			_bst.insert(*first++);
 	}
-	map(map &x) : _alloc(x.get_allocator()), _size(x.size()), _comp(x.key_comp()){
+	map(const map &x) : _alloc(x.get_allocator()), _size(x.size()), _comp(x.key_comp()){
 		map::iterator it = x.begin();
 		for (size_type i = 0; i < _size; i++){
 			_bst.insert(ft::make_pair(it->first, it->second));
@@ -72,7 +72,7 @@ public:
 		}
 	}
 	~map(){}
-	map &operator=(map &x){
+	map& operator=(const map &x){
 		if (this != &x){
 			this->clear();
 			if (x.size())
@@ -109,7 +109,7 @@ public:
 /*
 **capacity
 */
-	bool empty(){return (_size == 0);}
+	bool empty() const {return (_size == 0);}
 	size_type size() const{return _bst.size();}
 	size_type max_size() const{return (std::allocator< t_node<value_type> >()).max_size();}
 /*
@@ -164,7 +164,7 @@ public:
 		_size = _bst.size();
 	}
 	void swap(map &x){
-		if (*this != x){
+		if (this != &x){
 			map tmp(x);
 
 			x = *this;
@@ -254,32 +254,32 @@ private:
 };
 
 namespace ft{
-	template <class Key, class T>
-	bool operator==(const ft::map<Key, T> & lhs, const ft::map<Key, T> & rhs){
+	template < class Key, class T, class Compare, class Alloc >
+	bool operator==(const ft::map<Key, T, Compare, Alloc> & lhs, const ft::map<Key, T, Compare, Alloc> & rhs){
 		if (lhs.size() != rhs.size())
 			return (false);
 		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	}
-	template <class Key, class T>
-	bool operator!=(const ft::map<Key, T> & lhs, const ft::map<Key, T> & rhs){
+	template < class Key, class T, class Compare, class Alloc >
+	bool operator!=(const ft::map<Key, T, Compare, Alloc> & lhs, const ft::map<Key, T, Compare, Alloc> & rhs){
 		if (lhs.size() != rhs.size())
 			return (true);
 		return (!ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	}
-	template <class Key, class T>
-	bool operator<(const ft::map<Key, T> & lhs, const ft::map<Key, T> & rhs){
+	template < class Key, class T, class Compare, class Alloc >
+	bool operator<(const ft::map<Key, T, Compare, Alloc> & lhs, const ft::map<Key, T, Compare, Alloc> & rhs){
 		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	}
-	template <class Key, class T>
-	bool operator<=(const ft::map<Key, T> & lhs, const ft::map<Key, T> & rhs){
+	template < class Key, class T, class Compare, class Alloc >
+	bool operator<=(const ft::map<Key, T, Compare, Alloc> & lhs, const ft::map<Key, T, Compare, Alloc> & rhs){
 		return (!ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
 	}
-	template <class Key, class T>
-	bool operator>(const ft::map<Key, T> & lhs, const ft::map<Key, T> & rhs){
+	template < class Key, class T, class Compare, class Alloc >
+	bool operator>(const ft::map<Key, T, Compare, Alloc> & lhs, const ft::map<Key, T, Compare, Alloc> & rhs){
 		return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
 	}
-	template <class Key, class T>
-	bool operator>=(const ft::map<Key, T> & lhs, const ft::map<Key, T> & rhs){
+	template < class Key, class T, class Compare, class Alloc >
+	bool operator>=(const ft::map<Key, T, Compare, Alloc> & lhs, const ft::map<Key, T, Compare, Alloc> & rhs){
 		return (!ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	}
 /*	template < class T, class Alloc >

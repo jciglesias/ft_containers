@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/05/22 22:51:28 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/23 12:24:37 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/24 19:00:40 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -50,7 +50,7 @@ public:
 		return (*this);
 	}
 
-	reference		operator*(void) {return (_node->val);}
+	reference		operator*(void) const {return (_node->val);}
 	pointer			operator->(void) {return &(_node->val);}
 	bst_iterator &	operator++(void){
 		_node = upper_bound(_node, _node);
@@ -188,14 +188,14 @@ namespace ft
 	}
 
 	template < typename Key, typename T >
-	inline ft::bst_iterator<Key, T>	operator+(const ft::bst_iterator<Key, T> lhs,
+	inline long	operator+(const ft::bst_iterator<Key, T> lhs,
 											  const ft::bst_iterator<Key, T> rhs)
 	{
 		return (lhs.base() + rhs.base());
 	}
 
 	template < typename Key, typename T >
-	inline ft::bst_iterator<Key, T>	operator-(const ft::bst_iterator<Key, T> lhs,
+	inline long	operator-(const ft::bst_iterator<Key, T> lhs,
 											  const ft::bst_iterator<Key, T> rhs)
 	{
 		return (lhs.base() - rhs.base());
