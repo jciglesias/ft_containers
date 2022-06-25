@@ -20,7 +20,6 @@ template < typename T >
 void cmpmap(T &m){
 	std::cout << m.size() << std::endl;
 	std::cout << m.empty() << std::endl;
-//	std::cout << m.max_size() << std::endl;
 	typename T::iterator mit = m.begin();
 	for (unsigned long i = 0; i < m.size(); i++){
 		std::cout << "[" << mit->first << "] = " << mit->second << std::endl;
@@ -31,10 +30,6 @@ void cmpmap(T &m){
 template < class T >
 void map_test(T &m){
 	std::cout << "map['x'] = y:\n";
-//	m['a'] = 10;
-//	m['b'] = 20;
-//	m['c'] = 30;
-//	m['d'] = 40;
 	for (int i = 0; i < 1000; i++)
 		m[i] = i;
 	cmpmap(m);
@@ -72,5 +67,13 @@ void map_test(T &m){
 	std::cout << (*(c.upper_bound('b'))).second << std::endl;
 	std::cout << "map.equal_range('x'):\n";
 	std::cout << (c.equal_range('b')).second->second << std::endl;
+	std::cout << "map == map: " << (m == c) << std::endl;
+	//std::cout << "map <= map: " << (m <= c) << std::endl;
+	//std::cout << "map >= map: " << (m >= c) << std::endl;
+	//std::cout << "map < map: " << (m < c) << std::endl;
+	//std::cout << "map > map: " << (m > c) << std::endl;
+	std::cout << "map != map: " << (m != c) << std::endl;
+	std::cout << "map - map: " << (m.begin() - c.begin()) << std::endl;
+	std::cout << "map + map: " << (m.begin() + c.begin()) << std::endl;
 }
 #endif

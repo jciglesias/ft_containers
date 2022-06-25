@@ -24,7 +24,7 @@ class ft::bst_iterator : public ft::iterator< ft::random_access_iterator_tag, ft
 public:
 	typedef typename ft::iterator<ft::random_access_iterator_tag, ft::pair<const Key, T> >	iterator;
 	typedef typename iterator::value_type								value_type;
-	typedef t_node<value_type>*											t_pointer;
+	typedef ft::node<value_type>*										t_pointer;
 	typedef typename iterator::difference_type							difference_type;
 	typedef typename iterator::pointer									pointer;
 	typedef typename iterator::reference								reference;

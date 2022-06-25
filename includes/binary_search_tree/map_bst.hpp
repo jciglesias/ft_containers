@@ -17,54 +17,62 @@
 
 //https://en.wikipedia.org/wiki/Sorting_algorithm
 //https://www.geeksforgeeks.org/tree-sort/
-
-template < class T >
-class t_node{
-public:
-//	Key		first;
-//	T		second;
-	T		val;
-	t_node	*up;
-	t_node	*left;
-	t_node	*right;
-	t_node() : val(), up(0), left(0), right(0){}
-	t_node(const T &n) : val(n), up(0), left(0), right(0){}
-	t_node(const t_node &node) : val(&(node.val)),
-								up(&(node.up)), left(&(node.left)), right(&(node.right)) {}
-/*	struct s_node &operator=(const struct s_node &node){
-		this->val = node.val;
-		this->up = node.up;
-		this->left = node.left;
-		this->right = node.right;
+namespace ft{
+	template < class T >
+	class node{
+	public:
+	//	Key		first;
+	//	T		second;
+		T		val;
+		node	*up;
+		node	*left;
+		node	*right;
+		node() : val(), up(0), left(0), right(0){}
+		node(const T &n) : val(n), up(0), left(0), right(0){}
+		node(const node &node) : val(&(node.val)),
+									up(&(node.up)), left(&(node.left)), right(&(node.right)) {}
+	/*	struct s_node &operator=(const struct s_node &node){
+			this->val = node.val;
+			this->up = node.up;
+			this->left = node.left;
+			this->right = node.right;
 		}*/
-	~t_node(){}
-};
+		~node(){}
+	};
 
-template < class T >
-bool operator==(const t_node<T> *lhs, const t_node<T> *rhs){
-	return (lhs->val == rhs->val);
+	template < class T >
+	bool operator==(const ft::node<T> *lhs, const ft::node<T> *rhs){
+		return (lhs->val == rhs->val);
+	}	
+	template < class T >
+	bool operator!=(const ft::node<T> *lhs, const ft::node<T> *rhs){
+		return (lhs->val != rhs->val);
+	}
+	template < class T >
+	bool operator>(const ft::node<T> *lhs, const ft::node<T> *rhs){
+		return (lhs->val > rhs->val);
+	}
+	template < class T >
+	bool operator>=(const ft::node<T> *lhs, const ft::node<T> *rhs){
+		return (lhs->val >= rhs->val);
+	}
+	template < class T >
+	bool operator<(const ft::node<T> *lhs, const ft::node<T> *rhs){
+		return (lhs->val < rhs->val);
+	}
+	template < class T >
+	bool operator<=(const ft::node<T> *lhs, const ft::node<T> *rhs){
+		return (lhs->val <= rhs->val);
+	}
+	template < class T >
+	T operator+(const ft::node<T> *lhs, const ft::node<T> *rhs){
+		return (lhs->val + rhs->val);
+	}
+	template < class T >
+	T operator-(const ft::node<T> *lhs, const ft::node<T> *rhs){
+		return (lhs->val - rhs->val);
+	}
 }
-template < class T >
-bool operator!=(const t_node<T> *lhs, const t_node<T> *rhs){
-	return (lhs->val != rhs->val);
-}
-template < class T >
-bool operator>(const t_node<T> *lhs, const t_node<T> *rhs){
-	return (lhs->val > rhs->val);
-}
-template < class T >
-bool operator>=(const t_node<T> *lhs, const t_node<T> *rhs){
-	return (lhs->val >= rhs->val);
-}
-template < class T >
-bool operator<(const t_node<T> *lhs, const t_node<T> *rhs){
-	return (lhs->val < rhs->val);
-}
-template < class T >
-bool operator<=(const t_node<T> *lhs, const t_node<T> *rhs){
-	return (lhs->val <= rhs->val);
-}
-
 
 template < class Key, class T, class Compare = std::less<Key>,
 		   class Alloc = std::allocator<ft::pair<const Key, T> > >
@@ -74,23 +82,23 @@ public:
 	typedef ft::pair<const Key, T>			value_type;
 	map_bst(const Compare comp = Compare(), const Alloc &alloc = Alloc()) :
 		_root(0), _comp(comp), _alloc(alloc), _size(0){
-		_end = new t_node<value_type>;
-		_rend = new t_node<value_type>;
+		_end = new ft::node<value_type>;
+		_rend = new ft::node<value_type>;
 	}
 	~map_bst(){
 		this->erase_tree(_root);
 		delete _end;
 		delete _rend;
 	}
-	t_node<value_type> *root(){return _root;}
-/*	t_node<value_type> *search(Key &k) {
+	ft::node<value_type> *root(){return _root;}
+/*	ft::node<value_type> *search(Key &k) {
 		return this->search(_root, k);
 	}*/
 	unsigned long	size() const { return _size; }
-	t_node<value_type> *search(Key k) {
+	ft::node<value_type> *search(Key k) {
 		return this->search(_root, k);
 	}
-	t_node<value_type> *search(const Key k) const{
+	ft::node<value_type> *search(const Key k) const{
 		return this->search(_root, k);
 	}
 /*	bool insert(value_type &p) {
@@ -113,9 +121,9 @@ public:
 		this->_rend->right = this->_end->left;
 		return true;
 	}
-	void erase(t_node<value_type> *node) {
-		t_node<value_type> *left = node->left;
-		t_node<value_type> *right = node->right;
+	void erase(ft::node<value_type> *node) {
+		ft::node<value_type> *left = node->left;
+		ft::node<value_type> *right = node->right;
 
 		if (node->up != 0 && node->up->left == node)
 			node->up->left = 0;
@@ -135,19 +143,19 @@ public:
 		}
 	}
 /*	void erase(Key &k) {
-		t_node<value_type> *tmp = search(k);
+		ft::node<value_type> *tmp = search(k);
 
 		if (tmp != 0)
 			erase(tmp);
 	}*/
 	void erase(Key k) {
-		t_node<value_type> *tmp = search(k);
+		ft::node<value_type> *tmp = search(k);
 
 		if (tmp != 0)
 			erase(tmp);
 	}
-	t_node<value_type>	*smallest() {
-		t_node<value_type> *tmp = _root;
+	ft::node<value_type>	*smallest() {
+		ft::node<value_type> *tmp = _root;
 
 		if (tmp != 0){
 			while (tmp->left != 0)
@@ -155,8 +163,8 @@ public:
 		}
 		return (tmp);
 	}
-	t_node<value_type>	*smallest() const{
-		t_node<value_type> *tmp = _root;
+	ft::node<value_type>	*smallest() const{
+		ft::node<value_type> *tmp = _root;
 
 		if (tmp != 0){
 			while (tmp->left != 0)
@@ -164,8 +172,8 @@ public:
 		}
 		return (tmp);
 	}
-	t_node<value_type>	*biggest() {
-		t_node<value_type> *tmp = _root;
+	ft::node<value_type>	*biggest() {
+		ft::node<value_type> *tmp = _root;
 
 		if (tmp != 0){
 			while (tmp->right != 0){
@@ -175,8 +183,8 @@ public:
 		}
 		return (tmp);
 	}
-	t_node<value_type>	*biggest() const{
-		t_node<value_type> *tmp = _root;
+	ft::node<value_type>	*biggest() const{
+		ft::node<value_type> *tmp = _root;
 
 		if (tmp != 0){
 			while (tmp->right != 0)
@@ -187,7 +195,7 @@ public:
 	void print_bst(){
 		print_bst(_root);
 	}
-	void print_bst(t_node<value_type> *root){
+	void print_bst(ft::node<value_type> *root){
 		if (root != 0){
 			print_bst(root->left);
 			std::cout << root->val.second << std::endl;
@@ -198,16 +206,16 @@ public:
 		erase_tree(_root);
 		_root = 0;
 	}
-	t_node<value_type>	*end() const{ return _end; }
-	t_node<value_type>	*rend() const{ return _rend; }
+	ft::node<value_type>	*end() const{ return _end; }
+	ft::node<value_type>	*rend() const{ return _rend; }
 private:
-	t_node<value_type>	*_root;
+	ft::node<value_type>	*_root;
 	Compare			_comp;
 	Alloc			_alloc;
 	unsigned long	_size;
-	t_node<value_type>	*_end;
-	t_node<value_type>	*_rend;
-	void	erase_tree(t_node<value_type> *n){
+	ft::node<value_type>	*_end;
+	ft::node<value_type>	*_rend;
+	void	erase_tree(ft::node<value_type> *n){
 		if (n == 0)
 			return ;
 		if (n->left != 0)
@@ -219,9 +227,9 @@ private:
 		--_size;
 		return ;
 	}
-	t_node<value_type>	*insert(t_node<value_type> *node, value_type &p) {
+	ft::node<value_type>	*insert(ft::node<value_type> *node, value_type &p) {
 		if (node == 0)
-			return new t_node<value_type>(p);
+			return new ft::node<value_type>(p);
 		if (_comp(p.first, node->val.first)){
 			node->left = insert(node->left, p);
 			node->left->up = node;
@@ -232,7 +240,7 @@ private:
 		}
 		return node;
 	}
-	t_node<value_type> *insert(t_node<value_type> *root, t_node<value_type> *node) {
+	ft::node<value_type> *insert(ft::node<value_type> *root, ft::node<value_type> *node) {
 		if (root == 0)
 			return node;
 		if (root != 0 && _comp(node->val.first, root->val.first)){
@@ -245,8 +253,8 @@ private:
 		}
 		return root;
 	}
-	t_node<value_type> *search(t_node<value_type> *node, Key &k) {
-		t_node<value_type> *tmp = 0;
+	ft::node<value_type> *search(ft::node<value_type> *node, Key &k) {
+		ft::node<value_type> *tmp = 0;
 
 		if (node != 0){
 			if (k == node->val.first)
@@ -258,8 +266,8 @@ private:
 		}
 		return (tmp);
 	}
-	t_node<value_type> *search(t_node<value_type> *node, const Key &k) const{
-		t_node<value_type> *tmp = 0;
+	ft::node<value_type> *search(ft::node<value_type> *node, const Key &k) const{
+		ft::node<value_type> *tmp = 0;
 
 		if (node != 0){
 			if (k == node->val.first)

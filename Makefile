@@ -91,6 +91,7 @@ clean	:
 				@($(RM) $(COBJS))
 				@($(RM) $(DEPS))
 				@($(RM) $(CDEPS))
+				@($(RM) 'ft_output' 'std_output')
 				@$(ECHO) '> Directory cleaned'
 
 all		:		$(NAME)

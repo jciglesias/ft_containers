@@ -41,8 +41,8 @@ public:
 		}
 	};
 
-	typedef t_node<value_type>*										pointer;
-	typedef t_node<value_type>*										const_pointer;
+	typedef ft::node<value_type>*										pointer;
+	typedef ft::node<value_type>*										const_pointer;
 	typedef	ft::bst_iterator<Key, T>								iterator;
 	typedef ft::bst_iterator<Key, T>								const_iterator;
 	typedef	ft::bst_reverse_iterator<iterator>						reverse_iterator;
@@ -111,7 +111,7 @@ public:
 */
 	bool empty() const {return (_size == 0);}
 	size_type size() const{return _bst.size();}
-	size_type max_size() const{return (std::allocator< t_node<value_type> >()).max_size();}
+	size_type max_size() const{return (std::allocator< ft::node<value_type> >()).max_size();}
 /*
 **element access
 */
