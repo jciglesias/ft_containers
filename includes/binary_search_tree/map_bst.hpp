@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/05/18 11:29:51 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/23 12:27:32 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/27 12:08:03 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -43,7 +43,7 @@ namespace ft{
 	template < class T >
 	bool operator==(const ft::node<T> *lhs, const ft::node<T> *rhs){
 		return (lhs->val == rhs->val);
-	}	
+	}
 	template < class T >
 	bool operator!=(const ft::node<T> *lhs, const ft::node<T> *rhs){
 		return (lhs->val != rhs->val);
@@ -81,9 +81,7 @@ public:
 	//create heap_iterator
 	typedef ft::pair<const Key, T>			value_type;
 	map_bst(const Compare comp = Compare(), const Alloc &alloc = Alloc()) :
-		_root(0), _comp(comp), _alloc(alloc), _size(0){
-		_end = new ft::node<value_type>;
-		_rend = new ft::node<value_type>;
+		_root(0), _comp(comp), _alloc(alloc), _size(0), _end(0), _rend(0){
 	}
 	~map_bst(){
 		this->erase_tree(_root);
@@ -108,17 +106,24 @@ public:
 		_size++;
 		return true;
 	}*/
-	bool insert(value_type p) {
-		if (this->search(_root, p.first) != 0)
-			return false;
-		_root = this->insert(_root, p);
-		_size++;
+	void setEnd(){
+		if (_end == 0)
+			_end = new ft::node<value_type>;
+		if (_rend == 0)
+			_rend = new ft::node<value_type>;
 		this->_end->up = _root;
 		this->_end->left = this->smallest();
 		this->_end->right = this->biggest();
 		this->_rend->up = _root;
 		this->_rend->left = this->_end->right;
 		this->_rend->right = this->_end->left;
+	}
+	bool insert(value_type p) {
+		if (this->search(_root, p.first) != 0)
+			return false;
+		_root = this->insert(_root, p);
+		_size++;
+		this->setEnd();
 		return true;
 	}
 	void erase(ft::node<value_type> *node) {
@@ -141,6 +146,7 @@ public:
 			left->up = 0;
 			_root = insert(_root, left);
 		}
+		this->setEnd();
 	}
 /*	void erase(Key &k) {
 		ft::node<value_type> *tmp = search(k);
@@ -177,7 +183,6 @@ public:
 
 		if (tmp != 0){
 			while (tmp->right != 0){
-//				std::cout << tmp->first << " bst debug\n";
 				tmp = tmp->right;
 			}
 		}
@@ -205,14 +210,18 @@ public:
 	void erase_tree(){
 		erase_tree(_root);
 		_root = 0;
+		delete _end;
+		delete _rend;
+		_end = 0;
+		_rend = 0;
 	}
 	ft::node<value_type>	*end() const{ return _end; }
 	ft::node<value_type>	*rend() const{ return _rend; }
 private:
 	ft::node<value_type>	*_root;
-	Compare			_comp;
-	Alloc			_alloc;
-	unsigned long	_size;
+	Compare					_comp;
+	Alloc					_alloc;
+	unsigned long			_size;
 	ft::node<value_type>	*_end;
 	ft::node<value_type>	*_rend;
 	void	erase_tree(ft::node<value_type> *n){

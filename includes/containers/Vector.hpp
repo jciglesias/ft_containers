@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/03 15:21:58 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/21 11:17:15 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/27 15:00:40 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -16,6 +16,7 @@
 # include "../ft.hpp"
 # include "../iterators/random_access_iterator.hpp"
 # include "../iterators/reverse_iterator.hpp"
+# include <cstring>
 
 template < class T, class Alloc >
 class ft::vector
@@ -119,8 +120,9 @@ public:
 				return ;
 			pointer	tmp = _alloc.allocate(n);
 
-			for (size_type i = 0; i < _size; i++)
-				_alloc.construct(tmp + i, *(_start + i));
+//			for (size_type i = 0; i < _size; i++)
+//				_alloc.construct(tmp + i, *(_start + i));
+			memcpy(tmp, _start, sizeof(T) * _size);
 			_alloc.deallocate(this->_start, _capacity);
 			_capacity = n;
 			this->_start = tmp;

@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/04/27 15:50:02 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/03 10:09:04 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/27 12:08:45 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -163,10 +163,12 @@ namespace ft
 	bool lexicographical_compare(InputIterator1 f1, InputIterator1 l1,
 								 InputIterator2 f2, InputIterator2 l2){
 		while (f1 != l1) {
-			if (f2 == l2 || *f2 < *f1)
+			if (f2 == l2 || *f2 < *f1){
 				return false;
-			else if (*f1 < *f2)
+			}
+			else if (*f1 < *f2){
 				return true;
+			}
 			++f1;
 			++f2;
 		}

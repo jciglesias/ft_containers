@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/05/22 22:51:28 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/24 19:00:40 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/27 10:14:01 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -185,20 +185,6 @@ namespace ft
 						   const ft::bst_iterator<KR, TR> rhs)
 	{
 		return (lhs.base() >= rhs.base());
-	}
-
-	template < typename Key, typename T >
-	inline long	operator+(const ft::bst_iterator<Key, T> lhs,
-											  const ft::bst_iterator<Key, T> rhs)
-	{
-		return (lhs.base() + rhs.base());
-	}
-
-	template < typename Key, typename T >
-	inline long	operator-(const ft::bst_iterator<Key, T> lhs,
-											  const ft::bst_iterator<Key, T> rhs)
-	{
-		return (lhs.base() - rhs.base());
 	}
 }
 

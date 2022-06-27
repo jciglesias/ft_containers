@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/06/03 16:37:37 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/04 15:14:22 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/27 12:13:36 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -68,12 +68,10 @@ void map_test(T &m){
 	std::cout << "map.equal_range('x'):\n";
 	std::cout << (c.equal_range('b')).second->second << std::endl;
 	std::cout << "map == map: " << (m == c) << std::endl;
-	//std::cout << "map <= map: " << (m <= c) << std::endl;
-	//std::cout << "map >= map: " << (m >= c) << std::endl;
-	//std::cout << "map < map: " << (m < c) << std::endl;
-	//std::cout << "map > map: " << (m > c) << std::endl;
+	std::cout << "map <= map: " << (m <= c) << std::endl;
+	std::cout << "map >= map: " << (m >= c) << std::endl;
+	std::cout << "map < map: " << (m < c) << std::endl;
+	std::cout << "map > map: " << (m > c) << std::endl;
 	std::cout << "map != map: " << (m != c) << std::endl;
-	std::cout << "map - map: " << (m.begin() - c.begin()) << std::endl;
-	std::cout << "map + map: " << (m.begin() + c.begin()) << std::endl;
 }
 #endif
