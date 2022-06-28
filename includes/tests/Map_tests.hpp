@@ -6,14 +6,14 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/06/03 16:37:37 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/27 12:13:36 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/28 14:44:37 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef MAP_TESTS_HPP
 # define MAP_TESTS_HPP
 
-# include "Map.hpp"
+# include "map.hpp"
 # include <map>
 
 template < typename T >
@@ -36,6 +36,12 @@ void map_test(T &m){
 	std::cout << "map.insert(iterator, iterator):\n";
 	T c;
 	c.insert(m.begin(), m.end());
+	std::cout << "map == map: " << (m == c) << std::endl;
+	std::cout << "map <= map: " << (m <= c) << std::endl;
+	std::cout << "map >= map: " << (m >= c) << std::endl;
+	std::cout << "map < map: " << (m < c) << std::endl;
+	std::cout << "map > map: " << (m > c) << std::endl;
+	std::cout << "map != map: " << (m != c) << std::endl;
 	cmpmap(c);
 	std::cout << "map.erase('x'):\n";
 	m.erase('b');

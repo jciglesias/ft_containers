@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/04 09:32:15 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/27 10:27:23 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/28 11:49:43 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -246,7 +246,7 @@ public:
 **allocator
 */
 	allocator_type get_allocator() const{return _alloc;}
-private:
+protected:
 	allocator_type	_alloc;
 	map_bst<Key, T>	_bst;
 	size_type		_size;

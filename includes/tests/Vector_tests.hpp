@@ -6,14 +6,14 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/06/03 16:41:33 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/04 15:16:24 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/28 14:44:56 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
 #ifndef VECTOR_TESTS_HPP
 # define VECTOR_TESTS_HPP
 
-#include "Vector.hpp"
+#include "vector.hpp"
 #include <vector>
 
 template < class T >

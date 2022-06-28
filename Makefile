@@ -6,7 +6,7 @@
 #    By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/09 12:55:34 by jiglesia          #+#    #+#              #
-#    Updated: 2022/06/04 15:43:11 by jiglesia         ###   ########.fr        #
+#    Updated: 2022/06/28 14:50:26 by jiglesia         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -22,35 +22,24 @@ INCB		=	./includes/binary_search_tree/
 INCT		=	./includes/tests/
 
 # Libft
-SUB_MAKE	=
-INCFT		=
-
 INCLUDE		=	-I $(INC) -I $(INCC) -I $(INCI) -I $(INCB) -I $(INCT)
-
-INC_LIB		=
-
 
 #***************** SRC* *******************#
 
 DIRSRCS		=	./srcs/
 DIRSTD		=	$(DIRSRCS)/stdtest/
 
-SRCS		=	ft_main.cpp
-STDTEST		=	std_main.cpp
+SRCS		=	main.cpp
 
-FTSRC		=	$(SRCS)
-STDSRC		=	$(STDTEST)
+FTSRC		=	$(DIRSRCS)$(SRCS)
 
 #***************** DEPS ******************#
 
 DIROBJ		=	./depo/
 
-OAUX		=	$(FTSRC:%=$(DIROBJ)%)
-CAUX		=	$(STDSRC:%=$(DIROBJ)%)
+OAUX		=	$(SRCS:%=$(DIROBJ)%)
 DEPS		=	$(OAUX:.cpp=.d)
-CDEPS		=	$(CAUX:.cpp=.d)
 OBJS		=	$(OAUX:.cpp=.o)
-COBJS		=	$(CAUX:.cpp=.o)
 
 ifdef FLAGS
 	ifeq ($(FLAGS), no)
@@ -67,30 +56,22 @@ CC			=	/usr/bin/clang++
 RM			=	/bin/rm -f
 ECHO		=	/bin/echo -e
 
-#************************ DEPS COMPILATION *************************
-
-%.o		:		../$(DIRSRCS)/%.cpp
-				$(CC) $(CFLAGS) $(INCLUDE) -MMD -o $@ -c $<
-
-%.o		:		../$(DIRSTD)/%.cpp
-				$(CC) $(CFLAGS) $(INCLUDE) -MMD -o $@ -c $<
-
 #************************ MAIN COMPILATION *************************
 
-$(NAME)	:		$(OBJS) $(COBJS)
-				$(CC)  $(INCLUDE) $(CFLAGS) -o $(NAME) $(OBJS) $(INC_LIB)
-				$(CC)  $(INCLUDE) $(CFLAGS) -o $(CHNAME) $(COBJS) $(INC_LIB)
+$(NAME)	:		ft_main.o std_main.o
+				$(CC)  $(INCLUDE) $(CFLAGS) -o $(NAME) ./depo/ft_main.o $(INC_LIB)
+				$(CC)  $(INCLUDE) $(CFLAGS) -o $(CHNAME) ./depo/std_main.o $(INC_LIB)
 				@$(ECHO) '> Compiled'				@$(ECHO) '> Compiled'
 
-#stdtest	:		$(COBJS)
-#				$(CC)  $(INCLUDE) $(CFLAGS) -o $(CHNAME) $(COBJS) $(INC_LIB)
-#				@$(ECHO) '> Compiled'
+ft_main.o	:	$(FTSRC)
+				$(CC) $(CFLAGS) -DM_FT $(INCLUDE) -MMD -o $(DIROBJ)$@ -c $<
+
+std_main.o	:	$(FTSRC)
+				$(CC) $(CFLAGS) $(INCLUDE) -MMD -o $(DIROBJ)$@ -c $<
 
 clean	:
-				@($(RM) $(OBJS))
-				@($(RM) $(COBJS))
-				@($(RM) $(DEPS))
-				@($(RM) $(CDEPS))
+				@($(RM) $(DIROBJ)*.o)
+				@($(RM) $(DIROBJ)*.d)
 				@($(RM) 'ft_output' 'std_output')
 				@$(ECHO) '> Directory cleaned'
 
