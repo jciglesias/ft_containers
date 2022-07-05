@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/06/03 16:41:33 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/28 14:44:56 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/07/05 16:29:58 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,6 +15,7 @@
 
 #include "vector.hpp"
 #include <vector>
+#include <stdlib.h>
 
 template < class T >
 void	cmpftstd(T a){
@@ -26,9 +27,13 @@ void	cmpftstd(T a){
 }
 
 template < typename T >
-void vector_test(T &a){
-	for (int i = 0; i < 1000; i++)
-		a.push_back(i);
+void vector_test(T &a, int seed){
+	std::srand(seed);
+	int random = std::rand();
+	for (int i = 0; i < 1000; i++) {
+		a.push_back(random);
+		random = std::rand();
+	}
 	std::cout << "vector:" << std::endl;
 	cmpftstd(a);
 	std::cout << "v.insert(--v.end(), 20)" << std::endl;

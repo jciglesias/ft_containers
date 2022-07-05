@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/01 16:01:30 by jiglesia          #+#    #+#             //
-//   Updated: 2022/07/05 15:05:42 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/07/05 16:28:23 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -25,25 +25,25 @@ int main()
 	NAMESPACE::stack<int> s;
 	NAMESPACE::vector<int> v(3, 200);
 	NAMESPACE::map<char, int> m;
-	vector_test(v);
+	vector_test(v, M_RAN);
 	map_test(m, M_RAN);
-	stack_test(s);
+	stack_test(s, M_RAN);
 	NAMESPACE::stack<char> a;
 	NAMESPACE::vector<char> b(3, 20);
 	NAMESPACE::map<char, char> c;
-	stack_test(a);
-	vector_test(b);
+	stack_test(a, M_RAN);
+	vector_test(b, M_RAN);
 	map_test(c, M_RAN);
 	NAMESPACE::stack<unsigned long> d;
 	NAMESPACE::vector<unsigned long> e;
 	NAMESPACE::map<unsigned long, char> f;
-	stack_test(d);
-	vector_test(e);
+	stack_test(d, M_RAN);
+	vector_test(e, M_RAN);
 	map_test(f, M_RAN);
 	NAMESPACE::stack<short, std::vector<short> > g;
 	NAMESPACE::vector<short> h;
 	NAMESPACE::map<short, int> i;
-	stack_test(g);
-	vector_test(h);
+	stack_test(g, M_RAN);
+	vector_test(h, M_RAN);
 	map_test(i, M_RAN);
 }

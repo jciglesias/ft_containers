@@ -6,7 +6,7 @@
 #    By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/09 12:55:34 by jiglesia          #+#    #+#              #
-#    Updated: 2022/07/05 15:07:33 by jiglesia         ###   ########.fr        #
+#    Updated: 2022/07/05 16:43:24 by jiglesia         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -38,7 +38,7 @@ FTSRC		=	$(DIRSRCS)$(SRCS)
 DIROBJ		=	./depo/
 
 OAUX		=	$(SRCS:%=$(DIROBJ)%)
-DEPS		=	$(OAUX:.cpp=.d)
+DEPS		=	$(OAUX:.hpp=.d)
 OBJS		=	$(OAUX:.cpp=.o)
 
 ifdef FLAGS
@@ -58,16 +58,16 @@ ECHO		=	/bin/echo -e
 
 #************************ MAIN COMPILATION *************************
 
-$(NAME)	:		ft_main.o std_main.o
+$(NAME)	:		./depo/ft_main.o ./depo/std_main.o
 				$(CC)  $(INCLUDE) $(CFLAGS) -o $(NAME) ./depo/ft_main.o $(INC_LIB)
 				$(CC)  $(INCLUDE) $(CFLAGS) -o $(CHNAME) ./depo/std_main.o $(INC_LIB)
 				@$(ECHO) '> Compiled'				@$(ECHO) '> Compiled'
 
-ft_main.o	:	$(FTSRC)
-				$(CC) $(CFLAGS) -DM_FT -DM_RAN=250 $(INCLUDE) -MMD -o $(DIROBJ)$@ -c $<
+$(DIROBJ)ft_main.o	:	$(FTSRC)
+					$(CC) $(CFLAGS) -DM_FT -DM_RAN=255 $(INCLUDE) -MMD -o $@ -c $<
 
-std_main.o	:	$(FTSRC)
-				$(CC) $(CFLAGS) -DM_RAN=250 $(INCLUDE) -MMD -o $(DIROBJ)$@ -c $<
+$(DIROBJ)std_main.o	:	$(FTSRC)
+						$(CC) $(CFLAGS) -DM_RAN=255 $(INCLUDE) -MMD -o $@ -c $<
 
 clean	:
 				@($(RM) $(DIROBJ)*.o)
