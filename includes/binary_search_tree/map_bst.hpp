@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/05/18 11:29:51 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/28 11:39:10 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/07/03 17:52:19 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,8 +21,6 @@ namespace ft{
 	template < class T >
 	class node{
 	public:
-	//	Key		first;
-	//	T		second;
 		T		val;
 		node	*up;
 		node	*left;
@@ -138,22 +136,23 @@ public:
 			_root = 0;
 		delete node;
 		_size--;
-		if (!_size){
+/*		if (!_size){
 			delete _end;
 			delete _rend;
 			_end = 0;
 			_rend = 0;
-		}
+			}*/
 		if (right != 0){
 			right->up = 0;
 			_root = insert(_root, right);
-			this->setEnd();
+			//this->setEnd();
 		}
 		if (left != 0){
 			left->up = 0;
 			_root = insert(_root, left);
-			this->setEnd();
+			//this->setEnd();
 		}
+//		if (_root != 0)
 		this->setEnd();
 	}
 /*	void erase(Key &k) {
@@ -264,7 +263,7 @@ private:
 			root->left = insert(root->left, node);
 			root->left->up = root;
 		}
-		else if (root != 0 &&_comp(root->val.first, node->val.first)){
+		else if (root != 0 && _comp(root->val.first, node->val.first)){
 			root->right = insert(root->right, node);
 			root->right->up = root;
 		}

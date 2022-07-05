@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/04 09:32:15 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/28 11:49:43 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/07/03 15:01:59 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -41,10 +41,10 @@ public:
 		}
 	};
 
-	typedef ft::node<value_type>*										pointer;
-	typedef ft::node<value_type>*										const_pointer;
-	typedef	ft::bst_iterator<Key, T>								iterator;
-	typedef ft::bst_iterator<Key, T>								const_iterator;
+	typedef ft::node<value_type>*									pointer;
+	typedef ft::node<value_type>*									const_pointer;
+	typedef	ft::bst_iterator<Key, T, Compare>						iterator;
+	typedef ft::bst_iterator<Key, T, Compare>						const_iterator;
 	typedef	ft::bst_reverse_iterator<iterator>						reverse_iterator;
 	typedef ft::bst_reverse_iterator<const_iterator>				const_reverse_iterator;
 	typedef typename iterator::reference							reference;
@@ -54,17 +54,17 @@ public:
 /*
 **member functions
 */
-	explicit map(const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type()) : _alloc(alloc), _size(0), _comp(comp){}
+	explicit map(const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type()) : _alloc(alloc), _bst(comp), _size(0), _comp(comp){}
 	template <class InputIterator>
 	map(InputIterator first, InputIterator last, const key_compare &comp = key_compare(),
 		const allocator_type &alloc = allocator_type(),
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0) :
-		_alloc(alloc), _size(0), _comp(comp){
+		_alloc(alloc), _bst(comp), _size(0), _comp(comp){
 		_size = ft::distance(first, last);
 		while (first != last)
 			_bst.insert(*first++);
 	}
-	map(const map &x) : _alloc(x.get_allocator()), _size(x.size()), _comp(x.key_comp()){
+	map(const map &x) : _alloc(x.get_allocator()), _bst(x.key_comp()), _size(x.size()), _comp(x.key_comp()){
 		map::iterator it = x.begin();
 		for (size_type i = 0; i < _size; i++){
 			_bst.insert(ft::make_pair(it->first, it->second));
@@ -160,7 +160,7 @@ public:
 	}
 	void erase(iterator first, iterator last){
 		while (first != last)
-			this->_bst.erase(first++.base());
+			this->_bst.erase((first++).base());
 		_size = _bst.size();
 	}
 	void swap(map &x){
@@ -246,9 +246,12 @@ public:
 **allocator
 */
 	allocator_type get_allocator() const{return _alloc;}
+	void print_map(){ //delete
+		_bst.print_bst();
+	}
 protected:
 	allocator_type	_alloc;
-	map_bst<Key, T>	_bst;
+	map_bst<Key, T, Compare, Alloc>	_bst;
 	size_type		_size;
 	key_compare		_comp;
 };

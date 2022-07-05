@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/06/03 16:37:37 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/28 14:44:37 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/29 12:18:11 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -21,14 +21,20 @@ void cmpmap(T &m){
 	std::cout << m.size() << std::endl;
 	std::cout << m.empty() << std::endl;
 	typename T::iterator mit = m.begin();
-	for (unsigned long i = 0; i < m.size(); i++){
-		std::cout << "[" << mit->first << "] = " << mit->second << std::endl;
+	unsigned long size = m.size();
+	for (unsigned long i = 0; i < size; i++){
+		std::cout << "[" << i << "] = " << m[i] << std::endl;
 		mit++;
 	}
 }
 
 template < class T >
 void map_test(T &m){
+	m[1] = 1;
+	typename T::iterator it = m.begin();
+	std::cout << it->second << std::endl;
+	m[-1] = -1;
+	std::cout << it->second << std::endl;
 	std::cout << "map['x'] = y:\n";
 	for (int i = 0; i < 1000; i++)
 		m[i] = i;

@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/05/22 22:51:28 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/27 10:14:01 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/07/05 13:29:45 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -18,7 +18,7 @@
 //https://en.cppreference.com/w/cpp/iterator/bst_iterator
 //namespace ft {class bst_iterator;}
 
-template < class Key, class T >
+template < class Key, class T, class Compare >
 class ft::bst_iterator : public ft::iterator< ft::random_access_iterator_tag, ft::pair<const Key, T> >
 {
 public:
@@ -30,9 +30,9 @@ public:
 	typedef typename iterator::reference								reference;
 	typedef typename iterator::iterator_category						iterator_category;
 
-	bst_iterator(void) : _node(0) {}
-	bst_iterator(t_pointer ptr, t_pointer end) : _node(ptr), _end(end) {}
-	bst_iterator(const bst_iterator & rhs) : _node(rhs.base()), _end(rhs.end()) {}
+	bst_iterator(const Compare &comp = Compare()) : _node(0), _comp(comp) {}
+	bst_iterator(t_pointer ptr, t_pointer end, const Compare &comp = Compare()) : _node(ptr), _end(end), _comp(comp) {}
+	bst_iterator(const bst_iterator & rhs, const Compare &comp = Compare()) : _node(rhs.base()), _end(rhs.end()), _comp(comp) {}
 	~bst_iterator(void) {}
 /*
 **getter
@@ -53,25 +53,34 @@ public:
 	reference		operator*(void) const {return (_node->val);}
 	pointer			operator->(void) {return &(_node->val);}
 	bst_iterator &	operator++(void){
-		_node = upper_bound(_node, _node);
-		if (_node == 0)
+		_tmp = 0;
+		if (_end != 0 && (upper_bound(_end->up, _node->val.first) == false)) {
 			_node = _end;
-		return (*this);
+		}
+/*		if (_node == 0)
+			_node = _end;
+*/		return (*this);
 	}
 	bst_iterator		operator++(int){
 		bst_iterator tmp(this->_node, _end);
-		_node = upper_bound(_node, _node);
-		if (_node == 0){
+		_tmp = 0;
+		if (_end != 0 && (upper_bound(_end->up, _node->val.first) == false)) {
 			_node = _end;
 		}
-		return (tmp);
+/*		if (_node == 0){
+			_node = _end;
+		}
+*/		return (tmp);
 	}
 	bst_iterator &	operator--(void){
 		if (_node == _end){
 			_node = _end->right;
 		}
-		else
-			this->_node = search_behind(this->_node, _node);
+		else{
+			_tmp = 0;
+			if (search_behind(_end->up, _node->val.first) == false)
+				_node = _end;
+		}
 		return (*this);
 	}
 	bst_iterator		operator--(int){
@@ -79,8 +88,11 @@ public:
 
 		if (_node == _end)
 			_node = _end->right;
-		else
-			this->_node = search_behind(_node, _node);
+		else{
+			_tmp = 0;
+			if (search_behind(_end->up, _node->val.first) == false)
+				_node = _end;
+		}
 		return (tmp);
 	}
 	bst_iterator		operator+(difference_type n) const {
@@ -108,8 +120,8 @@ public:
 		return (*this);
 	}
 	reference					operator[](difference_type n) const {return *(*this + n);}
-	operator bst_iterator<const Key, const T> () const{
-		return (bst_iterator<const Key, const T>(this->_node));
+	operator bst_iterator<const Key, const T, const Compare> () const{
+		return (bst_iterator<const Key, const T, const Compare>(this->_node));
 	}
 /*	operator bst_iterator<Key, T> () {
 		return (bst_iterator<Key, T>(this->_node));
@@ -117,73 +129,100 @@ public:
 private:
 	t_pointer	_node;
 	t_pointer	_end;
-	t_pointer	search_behind(t_pointer n, t_pointer before){
+	Compare		_comp;
+	t_pointer	_tmp;
+/*	t_pointer	search_behind(t_pointer n, t_pointer before){
 		if (n->left != 0){
 			if (n->left->right != 0)
 				n = search_behind(n->left->right, n->left);
 			else
 				n = n->left;
 		}
-		else if (n->right != 0 && n->right->val.first < _node->val.first)
+		else if (n->right != 0 && _comp(n->right->val.first, _node->val.first))
 			n = search_behind(n->right, n);
-		else if (n->up != 0 && n->up != before)
-			return n->up;
+		else if (n->up != 0 && n->up != before){
+			if (_comp(n->val.first, n->up->val.first))
+				n = search_behind(n->up, n);
+			else
+				return n->up;
+		}
 		return n;
+		}*/
+	bool search_behind(t_pointer node, Key k) {
+		if (node != 0) {
+			if (_comp(node->val.first, k)){
+				if (search_behind(node->right, k) == true)
+					return true;
+			}
+			if (_tmp != 0 && _tmp->val.first == k) {
+				_node = node;
+				_tmp = 0;
+				return true;
+			}
+			_tmp = node;
+			if (!_comp(node->val.first, k)) {
+				if (search_behind(node->left, k) == true)
+					return true;
+			}
+		}
+		return false;
 	}
-	t_pointer	upper_bound(t_pointer node, t_pointer before){
-		if (node == 0)
-			return node;
-		if (node != 0 && node->val.first > _node->val.first)
-			return node;
-		if (node->right != 0 && node->right != before)
-			node = upper_bound(node->right, node);
-		else
-			node = upper_bound(node->up, node);
-		return node;
+	bool upper_bound(t_pointer node, Key k){
+		if (node != 0) {
+			if (_comp(k, node->val.first)){
+				if (upper_bound(node->left, k) == true)
+					return true;
+			}
+			if (_tmp != 0 && _tmp->val.first == k) {
+				_node = node;
+				_tmp = 0;
+				return true;
+			}
+			_tmp = node;
+			if (!_comp(k, node->val.first)){
+				if (upper_bound(node->right, k) == true)
+					return true;
+			}
+		}
+		return false;
 	}
 };
 
 namespace ft
 {
-	template < typename KL, typename TL, typename KR, typename TR >
-	inline bool	operator==(const ft::bst_iterator<KL, TL> lhs,
-						   const ft::bst_iterator<KR, TR> rhs)
-	{
+	template < typename KL, typename TL, typename CL, typename KR, typename TR, typename CR >
+	inline bool	operator==(const ft::bst_iterator<KL, TL, CL> lhs,
+						   const ft::bst_iterator<KR, TR, CR> rhs){
 		return (lhs.base() == rhs.base());
 	}
 
-	template < typename KL, typename TL, typename KR, typename TR >
-	inline bool	operator!=(const ft::bst_iterator<KL, TL> lhs,
-						   const ft::bst_iterator<KR, TR> rhs)
-	{
+	template < typename KL, typename TL, typename CL, typename KR, typename TR, typename CR >
+	inline bool	operator!=(const ft::bst_iterator<KL, TL, CL> lhs,
+						   const ft::bst_iterator<KR, TR, CR> rhs){
 		return (lhs.base() != rhs.base());
 	}
 
-	template < typename KL, typename TL, typename KR, typename TR >
-	inline bool	operator<(const ft::bst_iterator<KL, TL> lhs,
-						  const ft::bst_iterator<KR, TR> rhs)
-	{
+	template < typename KL, typename TL, typename CL, typename KR, typename TR, typename CR >
+	inline bool	operator<(const ft::bst_iterator<KL, TL, CL> lhs,
+						  const ft::bst_iterator<KR, TR, CR> rhs){
 		return (lhs.base() < rhs.base());
 	}
 
-	template < typename KL, typename TL, typename KR, typename TR >
-	inline bool	operator>(const ft::bst_iterator<KL, TL> lhs,
-						  const ft::bst_iterator<KR, TR> rhs)
-	{
+	template < typename KL, typename TL, typename CL, typename KR, typename TR, typename CR >
+	inline bool	operator>(const ft::bst_iterator<KL, TL, CL> lhs,
+						  const ft::bst_iterator<KR, TR, CR> rhs){
 		return (lhs.base() > rhs.base());
 	}
 
-	template < typename KL, typename TL, typename KR, typename TR >
-	inline bool	operator<=(const ft::bst_iterator<KL, TL> lhs,
-						   const ft::bst_iterator<KR, TR> rhs)
-	{
+	template < typename KL, typename TL, typename CL, typename KR, typename TR, typename CR >
+	inline bool	operator<=(const ft::bst_iterator<KL, TL, CL> lhs,
+						   const ft::bst_iterator<KR, TR, CR> rhs){
 		return (lhs.base() <= rhs.base());
 	}
 
-	template < typename KL, typename TL, typename KR, typename TR >
-	inline bool	operator>=(const ft::bst_iterator<KL, TL> lhs,
-						   const ft::bst_iterator<KR, TR> rhs)
-	{
+	template < typename KL, typename TL, typename CL, typename KR, typename TR, typename CR >
+	inline bool	operator>=(const ft::bst_iterator<KL, TL, CL> lhs,
+						   const ft::bst_iterator<KR, TR, CR> rhs){
 		return (lhs.base() >= rhs.base());
 	}
 }

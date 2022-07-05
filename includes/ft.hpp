@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/04/27 15:50:02 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/27 12:08:45 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/06/29 11:24:27 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -53,7 +53,7 @@ namespace ft
 	template < typename T >
 	class reverse_iterator;
 
-	template < class key, class T >
+	template < class key, class T, class Compare >
 	class bst_iterator;
 /*
 **Empty classes to identify the category of an iterator
@@ -263,7 +263,7 @@ namespace ft
 	}
 
 	template < class Key, class T, class Compare = std::less<Key>,
-			   class Alloc = std::allocator<pair<const Key, T> > >
+			   class Alloc = std::allocator<ft::pair<const Key, T> > >
 	class map;
 	template < class T1, class T2 >
 	pair<T1, T2> make_pair(T1 x, T2 y){ return (pair<T1, T2>(x, y));}
