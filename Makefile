@@ -6,7 +6,7 @@
 #    By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/09 12:55:34 by jiglesia          #+#    #+#              #
-#    Updated: 2022/06/28 14:50:26 by jiglesia         ###   ########.fr        #
+#    Updated: 2022/07/05 15:07:33 by jiglesia         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -64,10 +64,10 @@ $(NAME)	:		ft_main.o std_main.o
 				@$(ECHO) '> Compiled'				@$(ECHO) '> Compiled'
 
 ft_main.o	:	$(FTSRC)
-				$(CC) $(CFLAGS) -DM_FT $(INCLUDE) -MMD -o $(DIROBJ)$@ -c $<
+				$(CC) $(CFLAGS) -DM_FT -DM_RAN=250 $(INCLUDE) -MMD -o $(DIROBJ)$@ -c $<
 
 std_main.o	:	$(FTSRC)
-				$(CC) $(CFLAGS) $(INCLUDE) -MMD -o $(DIROBJ)$@ -c $<
+				$(CC) $(CFLAGS) -DM_RAN=250 $(INCLUDE) -MMD -o $(DIROBJ)$@ -c $<
 
 clean	:
 				@($(RM) $(DIROBJ)*.o)

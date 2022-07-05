@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/06/03 16:37:37 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/29 12:18:11 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/07/05 15:06:16 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,6 +15,8 @@
 
 # include "map.hpp"
 # include <map>
+# include <stdlib.h>
+# include <time.h>
 
 template < typename T >
 void cmpmap(T &m){
@@ -23,21 +25,20 @@ void cmpmap(T &m){
 	typename T::iterator mit = m.begin();
 	unsigned long size = m.size();
 	for (unsigned long i = 0; i < size; i++){
-		std::cout << "[" << i << "] = " << m[i] << std::endl;
+		std::cout << "[" << mit->first << "] = " << mit->second << std::endl;
 		mit++;
 	}
 }
 
 template < class T >
-void map_test(T &m){
-	m[1] = 1;
-	typename T::iterator it = m.begin();
-	std::cout << it->second << std::endl;
-	m[-1] = -1;
-	std::cout << it->second << std::endl;
+void map_test(T &m, int seed){
+	std::srand(seed);
 	std::cout << "map['x'] = y:\n";
-	for (int i = 0; i < 1000; i++)
-		m[i] = i;
+	int random = std::rand();
+	for (int i = 0; i < 1000; i++) {
+		m[random] = random;
+		random = std::rand();
+	}
 	cmpmap(m);
 	std::cout << "map.insert(iterator, iterator):\n";
 	T c;
@@ -70,7 +71,11 @@ void map_test(T &m){
 	std::cout << "map.value_comp()(*map.begin(), *map.rbegin()):\n";
 	std::cout << c.value_comp()(*c.begin(), *c.rbegin()) << std::endl;
 	std::cout << "map.find('x'):\n";
-	std::cout << (*(c.find('b'))).second << std::endl;
+	typename T::iterator it = c.find('b');
+	if (it != c.end())
+		std::cout << (*it).second << std::endl;
+	else
+		std::cout << "not found" << std::endl;
 	std::cout << "map.count('x'):\n";
 	std::cout << c.count('b') << std::endl;
 	std::cout << "map.lower_bound('x'):\n";
