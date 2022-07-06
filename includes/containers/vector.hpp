@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/03 15:21:58 by jiglesia          #+#    #+#             //
-//   Updated: 2022/06/28 11:50:03 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/07/06 18:12:41 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -271,7 +271,7 @@ public:
 **allocator
 */
 	allocator_type get_allocator(void) const {return (this->_alloc);}
-protected:
+private:
 	allocator_type	_alloc;
 	pointer			_start;
 	pointer			_end;

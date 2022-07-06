@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/04 09:32:15 by jiglesia          #+#    #+#             //
-//   Updated: 2022/07/06 16:23:11 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/07/06 19:31:13 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -111,7 +111,7 @@ public:
 */
 	bool empty() const {return (_size == 0);}
 	size_type size() const{return _bst.size();}
-	size_type max_size() const{return (std::allocator< ft::node<value_type> >()).max_size();}
+	size_type max_size() const{return _alloc.max_size();}
 /*
 **element access
 */
@@ -246,10 +246,7 @@ public:
 **allocator
 */
 	allocator_type get_allocator() const{return _alloc;}
-	void print_map(){ //delete
-		_bst.print_bst();
-	}
-protected:
+private:
 	allocator_type	_alloc;
 	map_bst<Key, T, Compare>	_bst;
 	size_type		_size;
@@ -285,10 +282,10 @@ namespace ft{
 	bool operator>=(const ft::map<Key, T, Compare, Alloc> & lhs, const ft::map<Key, T, Compare, Alloc> & rhs){
 		return (!ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	}
-/*	template < class T, class Alloc >
-	void swap(vector<T, Alloc> &x, vector<T, Alloc> &y){
+	template < class Key, class T, class Compare, class Alloc >
+	void swap(ft::map<Key, T, Compare, Alloc> &x, ft::map<Key, T, Compare, Alloc> &y){
 		x.swap(y);
-		}*/
+		}
 }
 
 #endif
