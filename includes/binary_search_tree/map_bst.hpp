@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2022/05/18 11:29:51 by jiglesia          #+#    #+#             //
-//   Updated: 2022/07/03 17:52:19 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/07/06 17:46:31 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -27,8 +27,8 @@ namespace ft{
 		node	*right;
 		node() : val(), up(0), left(0), right(0){}
 		node(const T &n) : val(n), up(0), left(0), right(0){}
-		node(const node &node) : val(&(node.val)),
-									up(&(node.up)), left(&(node.left)), right(&(node.right)) {}
+		node(const node &node) : val(node.val),
+									up(node.up), left(node.left), right(node.right) {}
 	/*	struct s_node &operator=(const struct s_node &node){
 			this->val = node.val;
 			this->up = node.up;
@@ -72,43 +72,32 @@ namespace ft{
 	}
 }
 
-template < class Key, class T, class Compare = std::less<Key>,
-		   class Alloc = std::allocator<ft::pair<const Key, T> > >
+template < class Key, class T, class Compare = std::less<Key> >
 class map_bst{
 public:
-	//create heap_iterator
-	typedef ft::pair<const Key, T>			value_type;
+	typedef ft::pair<const Key, T>					value_type;
+	typedef std::allocator<ft::node<value_type> >	Alloc;
 	map_bst(const Compare comp = Compare(), const Alloc &alloc = Alloc()) :
 		_root(0), _comp(comp), _alloc(alloc), _size(0), _end(0), _rend(0){
 	}
 	~map_bst(){
 		this->erase_tree(_root);
-		delete _end;
-		delete _rend;
+		_alloc.deallocate(_end, 1);
+		_alloc.deallocate(_rend, 1);
 	}
 	ft::node<value_type> *root(){return _root;}
-/*	ft::node<value_type> *search(Key &k) {
-		return this->search(_root, k);
-	}*/
-	unsigned long	size() const { return _size; }
-	ft::node<value_type> *search(Key k) {
+	ft::node<value_type> *search(const Key &k) {
 		return this->search(_root, k);
 	}
+	unsigned long	size() const { return _size; }
 	ft::node<value_type> *search(const Key k) const{
 		return this->search(_root, k);
 	}
-/*	bool insert(value_type &p) {
-		if (this->search(_root, p.first) != 0)
-			return false;
-		_root = this->insert(_root, p);
-		_size++;
-		return true;
-	}*/
 	void setEnd(){
 		if (_end == 0)
-			_end = new ft::node<value_type>;
+			_end = _alloc.allocate(1);
 		if (_rend == 0)
-			_rend = new ft::node<value_type>;
+			_rend = _alloc.allocate(1);
 		this->_end->up = _root;
 		this->_end->left = this->smallest();
 		this->_end->right = this->biggest();
@@ -136,31 +125,16 @@ public:
 			_root = 0;
 		delete node;
 		_size--;
-/*		if (!_size){
-			delete _end;
-			delete _rend;
-			_end = 0;
-			_rend = 0;
-			}*/
 		if (right != 0){
 			right->up = 0;
 			_root = insert(_root, right);
-			//this->setEnd();
 		}
 		if (left != 0){
 			left->up = 0;
 			_root = insert(_root, left);
-			//this->setEnd();
 		}
-//		if (_root != 0)
 		this->setEnd();
 	}
-/*	void erase(Key &k) {
-		ft::node<value_type> *tmp = search(k);
-
-		if (tmp != 0)
-			erase(tmp);
-	}*/
 	void erase(Key k) {
 		ft::node<value_type> *tmp = search(k);
 
@@ -217,8 +191,8 @@ public:
 	void erase_tree(){
 		erase_tree(_root);
 		_root = 0;
-		delete _end;
-		delete _rend;
+		_alloc.deallocate(_end, 1);
+		_alloc.deallocate(_rend, 1);
 		_end = 0;
 		_rend = 0;
 	}
@@ -238,14 +212,18 @@ private:
 			erase_tree(n->left);
 		if (n->right != 0)
 			erase_tree(n->right);
-		delete n;
+		_alloc.deallocate(n, 1);
 		n = 0;
 		--_size;
 		return ;
 	}
 	ft::node<value_type>	*insert(ft::node<value_type> *node, value_type &p) {
-		if (node == 0)
-			return new ft::node<value_type>(p);
+		if (node == 0) {
+			ft::node<value_type> *tmp = _alloc.allocate(1);
+			ft::node<value_type> val(p);
+			_alloc.construct(tmp, val);
+			return tmp;
+		}
 		if (_comp(p.first, node->val.first)){
 			node->left = insert(node->left, p);
 			node->left->up = node;

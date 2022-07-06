@@ -6,7 +6,7 @@
 //   By: jiglesia <jiglesia@student.42.fr>          +#+  +:+       +#+        //
 //                                                +#+#+#+#+#+   +#+           //
 //   Created: 2021/10/04 09:32:15 by jiglesia          #+#    #+#             //
-//   Updated: 2022/07/03 15:01:59 by jiglesia         ###   ########.fr       //
+//   Updated: 2022/07/06 16:23:11 by jiglesia         ###   ########.fr       //
 //                                                                            //
 // ************************************************************************** //
 
@@ -251,7 +251,7 @@ public:
 	}
 protected:
 	allocator_type	_alloc;
-	map_bst<Key, T, Compare, Alloc>	_bst;
+	map_bst<Key, T, Compare>	_bst;
 	size_type		_size;
 	key_compare		_comp;
 };
